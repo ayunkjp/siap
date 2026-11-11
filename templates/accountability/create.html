@@ -1,0 +1,63 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Buat LPJ{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-3">Buat Laporan Pertanggungjawaban</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Konfirmasi Pengajuan</h5>
+        </div>
+
+        <div class="card-body">
+            <p>
+                <strong>Nomor Pengajuan:</strong>
+                {{ fund_request.request_number }}
+            </p>
+
+            <p>
+                <strong>Judul Pengajuan:</strong>
+                {{ fund_request.subject }}
+            </p>
+
+            <p>
+                <strong>Program Studi:</strong>
+                {{ fund_request.study_program.name }}
+            </p>
+
+            <p>
+                <strong>Tahun Anggaran:</strong>
+                {{ fund_request.budget_year.name }}
+            </p>
+
+            <div class="alert alert-info">
+                LPJ akan dibuat berdasarkan pengajuan ini.
+                Setelah dibuat, Anda dapat mengunggah dokumen pendukung
+                dan mengirimkannya kepada Fakultas.
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <form method="post">
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-primary">
+                    Buat LPJ
+                </button>
+
+                <a
+                    href="{% url 'accountability:index' %}"
+                    class="btn btn-secondary"
+                >
+                    Kembali
+                </a>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

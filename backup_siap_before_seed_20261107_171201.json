@@ -1,0 +1,2661 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "userprofile"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "master_data",
+    "model": "budgetyear"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "master_data",
+    "model": "faculty"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "master_data",
+    "model": "studyprogram"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "activityallocation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "institutiondecision"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "programbudgetallocation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "rkatactivity"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "rkatallocationhistory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "rkatforwarding"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "rkat",
+    "model": "rkatsubmission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "fund_requests",
+    "model": "approvalhistory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "fund_requests",
+    "model": "fundrequest"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "fund_requests",
+    "model": "fundrequestactivity"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "fund_requests",
+    "model": "requestcostitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "disbursements",
+    "model": "facultyhandover"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "disbursements",
+    "model": "institutiondisbursement"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "realizations",
+    "model": "realization"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accountability",
+    "model": "accountabilityattachment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accountability",
+    "model": "accountabilityhistory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accountability",
+    "model": "accountabilityreport"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "fund_requests",
+    "model": "fundrequestinstitutiondecision"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "auditlog"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "00bnjxpeiu2e80dmd8v2ham3rlovdhc1",
+  "fields": {
+    "session_data": "e30:1xMq9R:H8pBayL8aagsodhJkv4OiRFGmF-sjX2h86BdSp-ktUE",
+    "expire_date": "2026-11-13T17:12:25.994Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2a9zbs7gq1akssqgcywm0inbjpxxg9kp",
+  "fields": {
+    "session_data": "e30:1xMq6X:pUnmhhNBHsaOZ4Nep8IlRaLTN-ZBqnubRnTlg311Dss",
+    "expire_date": "2026-11-13T17:09:25.960Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6dczswgg27r4bzigo9ovnce59fliyn55",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGllZ29m1Kek5g7X-4QBypDipEHeHSCmgfTPzXsLztla_9bz4KYmz0OL0uwWOj9x2kO7cbrOMc1uXKchdkQft8jqn_Lwc7t9B5V6_dQQALHaIgyKLJmmmBBgIoktQolFuLIQKsZAKijWjda4YQwQjZs3i_QHEITbz:1xMpBx:gvZfX5_QB-my4dT5s-jVVDIK_g-muulU6O66miHICVM",
+    "expire_date": "2026-11-13T16:10:57.759Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "a2btar670axe2awyzud4jqwh8ko2zjcf",
+  "fields": {
+    "session_data": "e30:1xMq4p:shTU8wP2ov11g4CXd98WAM5qkA09A-B_-PcTKhcPw4A",
+    "expire_date": "2026-11-13T17:07:39.002Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d5q75ojfdvh92fxpt24k9rtdz5tg5hgu",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-ZP2hpOcM1tq7wQHkSHFSIe4OkVJA-2bmvUTCba1p67ykicRZaHH63TKWB7cd0B3bbZZlbusyZbkr8qBdXmfi5-Vw_w4q9vqti8rW-FETKG1dKBkdc0ETgEeOgSCbiMBaUQCfwbrB01DYRR2j1daL9wfviTev:1xPjkH:GwSGg49wJjfUcEMXCbyc0y4b7jvlIrAgLVj1eymFfxU",
+    "expire_date": "2026-11-21T16:58:25.845Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ekiuoescknlz4u2uszovl43jt07e9tle",
+  "fields": {
+    "session_data": ".eJxVjE0OwiAYBe_C2hCQhoJL956BfH9I1dCktKvGuytJF7p9M_N2lWBbS9qaLGlidVFndfrdEOgptQN-QL3Pmua6LhPqruiDNn2bWV7Xw_07KNBKr7MfIQSKmD0i5AHBk4seRYKzJqPhAeUrsAWiyNmRs-CMMI-AYNT7Ay4IOgQ:1xMpBT:G5riergjsApetb93gEXKkulu9TkydeiOs_jzgQMiI9I",
+    "expire_date": "2026-11-13T16:10:27.374Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ql2n7atxwhixexncqua9yaqx1s85itbb",
+  "fields": {
+    "session_data": "e30:1xMq8B:3y3MuQfYjC6kC0mVdcIjHnZuKJCJ47GItmCB0w4YPzY",
+    "expire_date": "2026-11-13T17:11:07.273Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vp2rzi5n3dgpc4014lcrkewjzz8ukgdx",
+  "fields": {
+    "session_data": "e30:1xMqAv:2LvtIrn8GEnBUx7eCrPrVxQBUI5nFQgu4_JFRW8m0Ec",
+    "expire_date": "2026-11-13T17:13:57.835Z"
+  }
+},
+{
+  "model": "master_data.faculty",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T16:08:17.359Z",
+    "updated_at": "2026-10-30T16:08:17.359Z",
+    "name": "Fakultas Teknik",
+    "code": "FT",
+    "address": "Alamat Fakultas Teknik"
+  }
+},
+{
+  "model": "master_data.faculty",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-30T16:29:32.737Z",
+    "updated_at": "2026-11-07T15:22:36.556Z",
+    "name": "Fakultas Pertanian",
+    "code": "FAPERTA",
+    "address": "Tmaansari"
+  }
+},
+{
+  "model": "master_data.studyprogram",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T16:08:17.368Z",
+    "updated_at": "2026-10-30T16:08:17.368Z",
+    "faculty": 1,
+    "name": "Teknik Informatika",
+    "code": "TI"
+  }
+},
+{
+  "model": "master_data.budgetyear",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-10-30T16:45:56.060Z",
+    "updated_at": "2026-10-30T16:45:56.060Z",
+    "name": "2026",
+    "start_date": "2026-01-01",
+    "end_date": "2026-12-31",
+    "is_active": true
+  }
+},
+{
+  "model": "rkat.rkatsubmission",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T17:19:12.042Z",
+    "updated_at": "2026-10-31T09:45:49.510Z",
+    "study_program": 1,
+    "budget_year": 4,
+    "submission_number": "RKAT/2026/TI/A2044D07",
+    "status": "READY",
+    "submitted_at": "2026-10-30T17:36:57.601Z",
+    "notes": "RKAT Prodi Agribisnis"
+  }
+},
+{
+  "model": "rkat.rkatactivity",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T17:26:36.671Z",
+    "updated_at": "2026-10-30T17:26:36.671Z",
+    "rkat": 1,
+    "name": "Pengembangan Prodi",
+    "description": "Pelatihan prodi",
+    "proposed_amount": "2500000.00"
+  }
+},
+{
+  "model": "rkat.rkatactivity",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-30T17:27:12.265Z",
+    "updated_at": "2026-10-30T17:27:12.265Z",
+    "rkat": 1,
+    "name": "Honor Rapat",
+    "description": "",
+    "proposed_amount": "5000000.00"
+  }
+},
+{
+  "model": "rkat.activityallocation",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T09:45:25.347Z",
+    "updated_at": "2026-10-31T09:45:25.347Z",
+    "budget_allocation": 1,
+    "activity": 1,
+    "amount": "2500000.00"
+  }
+},
+{
+  "model": "rkat.activityallocation",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T09:45:39.611Z",
+    "updated_at": "2026-10-31T09:45:39.611Z",
+    "budget_allocation": 1,
+    "activity": 2,
+    "amount": "5000000.00"
+  }
+},
+{
+  "model": "fund_requests.fundrequestactivity",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T10:21:41.527Z",
+    "updated_at": "2026-10-31T12:34:00.054Z",
+    "fund_request": 1,
+    "rkat_activity": 2,
+    "requested_amount": "5000000.00",
+    "approved_amount": "5000000.00",
+    "notes": ""
+  }
+},
+{
+  "model": "fund_requests.fundrequestactivity",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T10:43:43.337Z",
+    "updated_at": "2026-10-31T12:34:00.059Z",
+    "fund_request": 1,
+    "rkat_activity": 1,
+    "requested_amount": "2500000.00",
+    "approved_amount": "2500000.00",
+    "notes": ""
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T11:58:09.068Z",
+    "updated_at": "2026-10-31T11:58:09.068Z",
+    "request_activity": 1,
+    "description": "honor panitia",
+    "quantity": "5.00",
+    "unit": "Orang",
+    "unit_price": "500000.00"
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T11:58:32.334Z",
+    "updated_at": "2026-10-31T11:58:32.334Z",
+    "request_activity": 1,
+    "description": "snack",
+    "quantity": "20.00",
+    "unit": "pack",
+    "unit_price": "15000.00"
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-31T11:58:57.425Z",
+    "updated_at": "2026-10-31T11:58:57.425Z",
+    "request_activity": 1,
+    "description": "Honor Pemateri",
+    "quantity": "2.00",
+    "unit": "orang",
+    "unit_price": "1000000.00"
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-10-31T11:59:22.984Z",
+    "updated_at": "2026-10-31T11:59:22.984Z",
+    "request_activity": 1,
+    "description": "kebersihan",
+    "quantity": "1.00",
+    "unit": "orang",
+    "unit_price": "200000.00"
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-10-31T12:00:49.233Z",
+    "updated_at": "2026-10-31T12:00:49.233Z",
+    "request_activity": 2,
+    "description": "pelatihan",
+    "quantity": "2.00",
+    "unit": "orang",
+    "unit_price": "750000.00"
+  }
+},
+{
+  "model": "fund_requests.requestcostitem",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-10-31T12:01:03.985Z",
+    "updated_at": "2026-10-31T12:01:03.985Z",
+    "request_activity": 2,
+    "description": "sertifikasi",
+    "quantity": "1.00",
+    "unit": "orang",
+    "unit_price": "1000000.00"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Profil Pengguna",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "add_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Profil Pengguna",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "change_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Profil Pengguna",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "delete_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Profil Pengguna",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "view_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Tahun Anggaran",
+    "content_type": [
+      "master_data",
+      "budgetyear"
+    ],
+    "codename": "add_budgetyear"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Tahun Anggaran",
+    "content_type": [
+      "master_data",
+      "budgetyear"
+    ],
+    "codename": "change_budgetyear"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Tahun Anggaran",
+    "content_type": [
+      "master_data",
+      "budgetyear"
+    ],
+    "codename": "delete_budgetyear"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Tahun Anggaran",
+    "content_type": [
+      "master_data",
+      "budgetyear"
+    ],
+    "codename": "view_budgetyear"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Program Studi",
+    "content_type": [
+      "master_data",
+      "studyprogram"
+    ],
+    "codename": "add_studyprogram"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Program Studi",
+    "content_type": [
+      "master_data",
+      "studyprogram"
+    ],
+    "codename": "change_studyprogram"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Program Studi",
+    "content_type": [
+      "master_data",
+      "studyprogram"
+    ],
+    "codename": "delete_studyprogram"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Program Studi",
+    "content_type": [
+      "master_data",
+      "studyprogram"
+    ],
+    "codename": "view_studyprogram"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Fakultas",
+    "content_type": [
+      "master_data",
+      "faculty"
+    ],
+    "codename": "add_faculty"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Fakultas",
+    "content_type": [
+      "master_data",
+      "faculty"
+    ],
+    "codename": "change_faculty"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Fakultas",
+    "content_type": [
+      "master_data",
+      "faculty"
+    ],
+    "codename": "delete_faculty"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Fakultas",
+    "content_type": [
+      "master_data",
+      "faculty"
+    ],
+    "codename": "view_faculty"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rkat activity",
+    "content_type": [
+      "rkat",
+      "rkatactivity"
+    ],
+    "codename": "add_rkatactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rkat activity",
+    "content_type": [
+      "rkat",
+      "rkatactivity"
+    ],
+    "codename": "change_rkatactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rkat activity",
+    "content_type": [
+      "rkat",
+      "rkatactivity"
+    ],
+    "codename": "delete_rkatactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rkat activity",
+    "content_type": [
+      "rkat",
+      "rkatactivity"
+    ],
+    "codename": "view_rkatactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add program budget allocation",
+    "content_type": [
+      "rkat",
+      "programbudgetallocation"
+    ],
+    "codename": "add_programbudgetallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change program budget allocation",
+    "content_type": [
+      "rkat",
+      "programbudgetallocation"
+    ],
+    "codename": "change_programbudgetallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete program budget allocation",
+    "content_type": [
+      "rkat",
+      "programbudgetallocation"
+    ],
+    "codename": "delete_programbudgetallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view program budget allocation",
+    "content_type": [
+      "rkat",
+      "programbudgetallocation"
+    ],
+    "codename": "view_programbudgetallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add activity allocation",
+    "content_type": [
+      "rkat",
+      "activityallocation"
+    ],
+    "codename": "add_activityallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change activity allocation",
+    "content_type": [
+      "rkat",
+      "activityallocation"
+    ],
+    "codename": "change_activityallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete activity allocation",
+    "content_type": [
+      "rkat",
+      "activityallocation"
+    ],
+    "codename": "delete_activityallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view activity allocation",
+    "content_type": [
+      "rkat",
+      "activityallocation"
+    ],
+    "codename": "view_activityallocation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rkat allocation history",
+    "content_type": [
+      "rkat",
+      "rkatallocationhistory"
+    ],
+    "codename": "add_rkatallocationhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rkat allocation history",
+    "content_type": [
+      "rkat",
+      "rkatallocationhistory"
+    ],
+    "codename": "change_rkatallocationhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rkat allocation history",
+    "content_type": [
+      "rkat",
+      "rkatallocationhistory"
+    ],
+    "codename": "delete_rkatallocationhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rkat allocation history",
+    "content_type": [
+      "rkat",
+      "rkatallocationhistory"
+    ],
+    "codename": "view_rkatallocationhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rkat submission",
+    "content_type": [
+      "rkat",
+      "rkatsubmission"
+    ],
+    "codename": "add_rkatsubmission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rkat submission",
+    "content_type": [
+      "rkat",
+      "rkatsubmission"
+    ],
+    "codename": "change_rkatsubmission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rkat submission",
+    "content_type": [
+      "rkat",
+      "rkatsubmission"
+    ],
+    "codename": "delete_rkatsubmission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rkat submission",
+    "content_type": [
+      "rkat",
+      "rkatsubmission"
+    ],
+    "codename": "view_rkatsubmission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rkat forwarding",
+    "content_type": [
+      "rkat",
+      "rkatforwarding"
+    ],
+    "codename": "add_rkatforwarding"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rkat forwarding",
+    "content_type": [
+      "rkat",
+      "rkatforwarding"
+    ],
+    "codename": "change_rkatforwarding"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rkat forwarding",
+    "content_type": [
+      "rkat",
+      "rkatforwarding"
+    ],
+    "codename": "delete_rkatforwarding"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rkat forwarding",
+    "content_type": [
+      "rkat",
+      "rkatforwarding"
+    ],
+    "codename": "view_rkatforwarding"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add institution decision",
+    "content_type": [
+      "rkat",
+      "institutiondecision"
+    ],
+    "codename": "add_institutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change institution decision",
+    "content_type": [
+      "rkat",
+      "institutiondecision"
+    ],
+    "codename": "change_institutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete institution decision",
+    "content_type": [
+      "rkat",
+      "institutiondecision"
+    ],
+    "codename": "delete_institutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view institution decision",
+    "content_type": [
+      "rkat",
+      "institutiondecision"
+    ],
+    "codename": "view_institutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Pengajuan Dana",
+    "content_type": [
+      "fund_requests",
+      "fundrequest"
+    ],
+    "codename": "add_fundrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Pengajuan Dana",
+    "content_type": [
+      "fund_requests",
+      "fundrequest"
+    ],
+    "codename": "change_fundrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Pengajuan Dana",
+    "content_type": [
+      "fund_requests",
+      "fundrequest"
+    ],
+    "codename": "delete_fundrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Pengajuan Dana",
+    "content_type": [
+      "fund_requests",
+      "fundrequest"
+    ],
+    "codename": "view_fundrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Riwayat Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "approvalhistory"
+    ],
+    "codename": "add_approvalhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Riwayat Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "approvalhistory"
+    ],
+    "codename": "change_approvalhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Riwayat Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "approvalhistory"
+    ],
+    "codename": "delete_approvalhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Riwayat Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "approvalhistory"
+    ],
+    "codename": "view_approvalhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Aktivitas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestactivity"
+    ],
+    "codename": "add_fundrequestactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Aktivitas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestactivity"
+    ],
+    "codename": "change_fundrequestactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Aktivitas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestactivity"
+    ],
+    "codename": "delete_fundrequestactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Aktivitas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestactivity"
+    ],
+    "codename": "view_fundrequestactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Rincian Biaya",
+    "content_type": [
+      "fund_requests",
+      "requestcostitem"
+    ],
+    "codename": "add_requestcostitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Rincian Biaya",
+    "content_type": [
+      "fund_requests",
+      "requestcostitem"
+    ],
+    "codename": "change_requestcostitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Rincian Biaya",
+    "content_type": [
+      "fund_requests",
+      "requestcostitem"
+    ],
+    "codename": "delete_requestcostitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Rincian Biaya",
+    "content_type": [
+      "fund_requests",
+      "requestcostitem"
+    ],
+    "codename": "view_requestcostitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Penyerahan Dana Fakultas ke Prodi",
+    "content_type": [
+      "disbursements",
+      "facultyhandover"
+    ],
+    "codename": "add_facultyhandover"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Penyerahan Dana Fakultas ke Prodi",
+    "content_type": [
+      "disbursements",
+      "facultyhandover"
+    ],
+    "codename": "change_facultyhandover"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Penyerahan Dana Fakultas ke Prodi",
+    "content_type": [
+      "disbursements",
+      "facultyhandover"
+    ],
+    "codename": "delete_facultyhandover"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Penyerahan Dana Fakultas ke Prodi",
+    "content_type": [
+      "disbursements",
+      "facultyhandover"
+    ],
+    "codename": "view_facultyhandover"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Pencairan Lembaga ke Fakultas",
+    "content_type": [
+      "disbursements",
+      "institutiondisbursement"
+    ],
+    "codename": "add_institutiondisbursement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Pencairan Lembaga ke Fakultas",
+    "content_type": [
+      "disbursements",
+      "institutiondisbursement"
+    ],
+    "codename": "change_institutiondisbursement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Pencairan Lembaga ke Fakultas",
+    "content_type": [
+      "disbursements",
+      "institutiondisbursement"
+    ],
+    "codename": "delete_institutiondisbursement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Pencairan Lembaga ke Fakultas",
+    "content_type": [
+      "disbursements",
+      "institutiondisbursement"
+    ],
+    "codename": "view_institutiondisbursement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Realisasi Penggunaan Dana",
+    "content_type": [
+      "realizations",
+      "realization"
+    ],
+    "codename": "add_realization"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Realisasi Penggunaan Dana",
+    "content_type": [
+      "realizations",
+      "realization"
+    ],
+    "codename": "change_realization"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Realisasi Penggunaan Dana",
+    "content_type": [
+      "realizations",
+      "realization"
+    ],
+    "codename": "delete_realization"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Realisasi Penggunaan Dana",
+    "content_type": [
+      "realizations",
+      "realization"
+    ],
+    "codename": "view_realization"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Riwayat LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityhistory"
+    ],
+    "codename": "add_accountabilityhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Riwayat LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityhistory"
+    ],
+    "codename": "change_accountabilityhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Riwayat LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityhistory"
+    ],
+    "codename": "delete_accountabilityhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Riwayat LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityhistory"
+    ],
+    "codename": "view_accountabilityhistory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Laporan Pertanggungjawaban",
+    "content_type": [
+      "accountability",
+      "accountabilityreport"
+    ],
+    "codename": "add_accountabilityreport"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Laporan Pertanggungjawaban",
+    "content_type": [
+      "accountability",
+      "accountabilityreport"
+    ],
+    "codename": "change_accountabilityreport"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Laporan Pertanggungjawaban",
+    "content_type": [
+      "accountability",
+      "accountabilityreport"
+    ],
+    "codename": "delete_accountabilityreport"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Laporan Pertanggungjawaban",
+    "content_type": [
+      "accountability",
+      "accountabilityreport"
+    ],
+    "codename": "view_accountabilityreport"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Lampiran LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityattachment"
+    ],
+    "codename": "add_accountabilityattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Lampiran LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityattachment"
+    ],
+    "codename": "change_accountabilityattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Lampiran LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityattachment"
+    ],
+    "codename": "delete_accountabilityattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Lampiran LPJ",
+    "content_type": [
+      "accountability",
+      "accountabilityattachment"
+    ],
+    "codename": "view_accountabilityattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Keputusan Lembaga atas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestinstitutiondecision"
+    ],
+    "codename": "add_fundrequestinstitutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Keputusan Lembaga atas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestinstitutiondecision"
+    ],
+    "codename": "change_fundrequestinstitutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Keputusan Lembaga atas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestinstitutiondecision"
+    ],
+    "codename": "delete_fundrequestinstitutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Keputusan Lembaga atas Pengajuan",
+    "content_type": [
+      "fund_requests",
+      "fundrequestinstitutiondecision"
+    ],
+    "codename": "view_fundrequestinstitutiondecision"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Audit Log",
+    "content_type": [
+      "accounts",
+      "auditlog"
+    ],
+    "codename": "add_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Audit Log",
+    "content_type": [
+      "accounts",
+      "auditlog"
+    ],
+    "codename": "change_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Audit Log",
+    "content_type": [
+      "accounts",
+      "auditlog"
+    ],
+    "codename": "delete_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Audit Log",
+    "content_type": [
+      "accounts",
+      "auditlog"
+    ],
+    "codename": "view_auditlog"
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$r42ZLJR6aCpuHrwHaOKjXX$pzLEWNRwMSaAmZo8MXYdiok/A6fosrmSrXaB2V5OEt0=",
+    "last_login": "2026-11-07T16:58:25.842Z",
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@siap.local",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T16:06:08.371Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$aYO3PaYFeNCO5PvJwZdtie$HxFkIq5yRABQBy4c752btkrHud1sAKv18FWGOhCenAQ=",
+    "last_login": "2026-11-07T16:56:46.115Z",
+    "is_superuser": false,
+    "username": "prodi",
+    "first_name": "",
+    "last_name": "",
+    "email": "prodi@siap.local",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T16:08:17.373Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$RbLEvsskdh68MthJNiTNkM$J+HU7Hjj34fG0g9poRM/YYGcwkFUM2WBS5NzorqwaNk=",
+    "last_login": "2026-11-07T05:28:25.871Z",
+    "is_superuser": false,
+    "username": "fakultas",
+    "first_name": "",
+    "last_name": "",
+    "email": "fakultas@siap.local",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T16:08:18.037Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$yaZAr40Z5E7rlB5Rium1cV$QIivcEnqmdt6KeNTTY3PTO+bVIKHajY3cQF1TOaTctM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ujang",
+    "first_name": "ujang binn",
+    "last_name": "bekok",
+    "email": "uj@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-07T15:32:22.268Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T16:06:09.026Z",
+    "updated_at": "2026-10-30T16:06:09.026Z",
+    "user": [
+      "admin"
+    ],
+    "role": "ADMIN",
+    "faculty": null,
+    "study_program": null
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-30T16:08:18.031Z",
+    "updated_at": "2026-10-30T16:08:18.031Z",
+    "user": [
+      "prodi"
+    ],
+    "role": "PRODI",
+    "faculty": null,
+    "study_program": 1
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-30T16:08:18.674Z",
+    "updated_at": "2026-10-30T16:08:18.674Z",
+    "user": [
+      "fakultas"
+    ],
+    "role": "FAKULTAS",
+    "faculty": 1,
+    "study_program": null
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-11-07T15:32:22.973Z",
+    "updated_at": "2026-11-07T15:32:57.360Z",
+    "user": [
+      "ujang"
+    ],
+    "role": "FAKULTAS",
+    "faculty": 1,
+    "study_program": null
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 1,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "OTHER",
+    "app_label": "accounts",
+    "model_name": "test",
+    "object_id": "TEST-001",
+    "object_repr": "Pengujian Audit Log",
+    "description": "Pengujian pencatatan Audit Log SIAP.",
+    "changes": {
+      "status": {
+        "old": null,
+        "new": "TEST"
+      }
+    },
+    "ip_address": null,
+    "created_at": "2026-11-07T04:50:32.576Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 2,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "OTHER",
+    "app_label": "accounts",
+    "model_name": "security_test",
+    "object_id": "SEC-001",
+    "object_repr": "Pengujian Keamanan",
+    "description": "Pengujian perlindungan Audit Log.",
+    "changes": {},
+    "ip_address": null,
+    "created_at": "2026-11-07T05:52:17.905Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 3,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "CREATE",
+    "app_label": "master_data",
+    "model_name": "faculty",
+    "object_id": "4",
+    "object_repr": "Fakultas Ekonomi dan Bisnis",
+    "description": "Admin menambahkan Fakultas.",
+    "changes": {
+      "old": {},
+      "new": {
+        "name": "Fakultas Ekonomi dan Bisnis",
+        "code": "FEB",
+        "address": null
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:17:24.745Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 4,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "master_data",
+    "model_name": "faculty",
+    "object_id": "4",
+    "object_repr": "Fakultas Ekonomi dan Bisnis",
+    "description": "Admin mengubah data Fakultas.",
+    "changes": {
+      "old": {
+        "name": "Fakultas Ekonomi dan Bisnis",
+        "code": "FEB",
+        "address": null
+      },
+      "new": {
+        "name": "Fakultas Ekonomi dan Bisnis",
+        "code": "FEB",
+        "address": "jaan tamansari"
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:17:40.794Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 5,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "DELETE",
+    "app_label": "master_data",
+    "model_name": "faculty",
+    "object_id": "4",
+    "object_repr": "Fakultas Ekonomi dan Bisnis",
+    "description": "Admin menghapus data Fakultas.",
+    "changes": {
+      "deleted_data": {
+        "id": 4,
+        "name": "Fakultas Ekonomi dan Bisnis",
+        "code": "FEB",
+        "address": "jaan tamansari"
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:17:59.894Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 6,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "master_data",
+    "model_name": "faculty",
+    "object_id": "3",
+    "object_repr": "Fakultas Pertanian",
+    "description": "Admin mengubah data Fakultas.",
+    "changes": {
+      "old": {
+        "name": "Fakultas Pertanian",
+        "code": "FP",
+        "address": null
+      },
+      "new": {
+        "name": "Fakultas Pertanian",
+        "code": "FAPERTA",
+        "address": "Tmaansari"
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:22:36.559Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 7,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "DELETE",
+    "app_label": "master_data",
+    "model_name": "studyprogram",
+    "object_id": "2",
+    "object_repr": "Agribisnis",
+    "description": "Admin menghapus data Program Studi.",
+    "changes": {
+      "deleted_data": {
+        "id": 2,
+        "faculty_id": 3,
+        "faculty_name": "Fakultas Pertanian",
+        "name": "Agribisnis",
+        "code": "AGRI"
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:23:10.258Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 8,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "master_data",
+    "model_name": "budgetyear",
+    "object_id": "3",
+    "object_repr": "2024",
+    "description": "Admin mengubah Tahun Anggaran.",
+    "changes": {
+      "old": {
+        "name": "2025",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "is_active": false
+      },
+      "new": {
+        "name": "2024",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "is_active": false
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:28:05.142Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 9,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "DELETE",
+    "app_label": "master_data",
+    "model_name": "budgetyear",
+    "object_id": "3",
+    "object_repr": "2024",
+    "description": "Admin menghapus Tahun Anggaran.",
+    "changes": {
+      "deleted_data": {
+        "id": 3,
+        "name": "2024",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "is_active": false
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:28:22.165Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 10,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "CREATE",
+    "app_label": "accounts",
+    "model_name": "userprofile",
+    "object_id": "4",
+    "object_repr": "ujang - Fakultas",
+    "description": "Admin membuat akun pengguna SIAP.",
+    "changes": {
+      "old": {},
+      "new": {
+        "username": "ujang",
+        "email": "uj@gmail.com",
+        "first_name": "ujang",
+        "last_name": "bekok",
+        "role": "FAKULTAS",
+        "faculty_id": 3,
+        "faculty_name": "Fakultas Pertanian",
+        "study_program_id": null,
+        "study_program_name": null,
+        "is_active": true,
+        "password_changed": true
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:32:22.974Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 11,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "accounts",
+    "model_name": "userprofile",
+    "object_id": "4",
+    "object_repr": "ujang - Fakultas",
+    "description": "Admin mengubah data akun pengguna SIAP.",
+    "changes": {
+      "old": {
+        "username": "ujang",
+        "email": "uj@gmail.com",
+        "first_name": "ujang",
+        "last_name": "bekok",
+        "role": "FAKULTAS",
+        "faculty_id": 3,
+        "faculty_name": "Fakultas Pertanian",
+        "study_program_id": null,
+        "study_program_name": null,
+        "is_active": true
+      },
+      "new": {
+        "username": "ujang",
+        "email": "uj@gmail.com",
+        "first_name": "ujang",
+        "last_name": "bekok",
+        "role": "FAKULTAS",
+        "faculty_id": 1,
+        "faculty_name": "Fakultas Teknik",
+        "study_program_id": null,
+        "study_program_name": null,
+        "is_active": true,
+        "password_changed": false
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:32:44.781Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 12,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "accounts",
+    "model_name": "userprofile",
+    "object_id": "4",
+    "object_repr": "ujang - Fakultas",
+    "description": "Admin mengubah data akun pengguna SIAP.",
+    "changes": {
+      "old": {
+        "username": "ujang",
+        "email": "uj@gmail.com",
+        "first_name": "ujang",
+        "last_name": "bekok",
+        "role": "FAKULTAS",
+        "faculty_id": 1,
+        "faculty_name": "Fakultas Teknik",
+        "study_program_id": null,
+        "study_program_name": null,
+        "is_active": true
+      },
+      "new": {
+        "username": "ujang",
+        "email": "uj@gmail.com",
+        "first_name": "ujang binn",
+        "last_name": "bekok",
+        "role": "FAKULTAS",
+        "faculty_id": 1,
+        "faculty_name": "Fakultas Teknik",
+        "study_program_id": null,
+        "study_program_name": null,
+        "is_active": true,
+        "password_changed": false
+      }
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:32:57.361Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 13,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "accounts",
+    "model_name": "userprofile",
+    "object_id": "4",
+    "object_repr": "ujang - Fakultas",
+    "description": "Admin dinonaktifkan akun pengguna SIAP.",
+    "changes": {
+      "is_active": {
+        "old": true,
+        "new": false
+      },
+      "username": "ujang"
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:35:50.878Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 14,
+  "fields": {
+    "actor": [
+      "admin"
+    ],
+    "action": "UPDATE",
+    "app_label": "accounts",
+    "model_name": "userprofile",
+    "object_id": "4",
+    "object_repr": "ujang - Fakultas",
+    "description": "Admin diaktifkan akun pengguna SIAP.",
+    "changes": {
+      "is_active": {
+        "old": false,
+        "new": true
+      },
+      "username": "ujang"
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T15:36:07.007Z"
+  }
+},
+{
+  "model": "accounts.auditlog",
+  "pk": 15,
+  "fields": {
+    "actor": [
+      "prodi"
+    ],
+    "action": "CREATE",
+    "app_label": "fund_requests",
+    "model_name": "fundrequest",
+    "object_id": "2",
+    "object_repr": "REQ/2026/TI/E8DAAE09",
+    "description": "Membuat pengajuan dana REQ/2026/TI/E8DAAE09 untuk Program Studi Teknik Informatika.",
+    "changes": {
+      "request_number": "REQ/2026/TI/E8DAAE09",
+      "subject": "Revisi",
+      "budget_year": "2026",
+      "status": "DRAFT",
+      "created_by": "prodi"
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-07T16:17:26.608Z"
+  }
+},
+{
+  "model": "rkat.rkatforwarding",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T17:37:47.136Z",
+    "updated_at": "2026-10-30T17:37:47.136Z",
+    "rkat": 1,
+    "forwarded_by": [
+      "fakultas"
+    ],
+    "forwarded_at": "2026-10-30T17:37:47.134Z",
+    "reference_number": "fak/02/dispo",
+    "notes": ""
+  }
+},
+{
+  "model": "rkat.institutiondecision",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-30T18:13:45.353Z",
+    "updated_at": "2026-10-30T18:13:45.353Z",
+    "rkat": 1,
+    "decision_status": "APPROVED",
+    "proposed_total": "7500000.00",
+    "approved_total": "7500000.00",
+    "decision_date": "2026-10-31",
+    "reference_number": "YUS/12/UNPER",
+    "document": "rkat/decisions/03._25-02-2026_-_Dekan_Fakultas_-_Surat_Pengajuan_Dana_Kolaborasi_Produk_Unggulan_Agribisnis_Mahasiswa.pdf",
+    "recorded_by": [
+      "fakultas"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "rkat.programbudgetallocation",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T09:22:10.686Z",
+    "updated_at": "2026-10-31T09:22:10.686Z",
+    "rkat": 1,
+    "final_amount": "7500000.00",
+    "determined_by": [
+      "fakultas"
+    ],
+    "determined_at": "2026-10-31T09:22:10.684Z",
+    "notes": "Catatan di tetapkan"
+  }
+},
+{
+  "model": "rkat.rkatallocationhistory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T09:45:25.349Z",
+    "updated_at": "2026-10-31T09:45:25.349Z",
+    "allocation": 1,
+    "old_amount": "0.00",
+    "new_amount": "2500000.00",
+    "changed_by": [
+      "prodi"
+    ],
+    "reason": "Tida ada perubahan"
+  }
+},
+{
+  "model": "rkat.rkatallocationhistory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T09:45:39.612Z",
+    "updated_at": "2026-10-31T09:45:39.612Z",
+    "allocation": 2,
+    "old_amount": "0.00",
+    "new_amount": "5000000.00",
+    "changed_by": [
+      "prodi"
+    ],
+    "reason": "Tida ada perubahan"
+  }
+},
+{
+  "model": "fund_requests.fundrequest",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T10:02:36.044Z",
+    "updated_at": "2026-10-31T12:34:00.066Z",
+    "study_program": 1,
+    "budget_year": 4,
+    "request_number": "REQ/2026/TI/9D47200F",
+    "subject": "Pengajuan Pencairan Dana",
+    "letter_date": "2026-10-31",
+    "created_by": [
+      "prodi"
+    ],
+    "status": "APPROVED",
+    "submitted_at": "2026-10-31T12:05:11.763Z",
+    "notes": ""
+  }
+},
+{
+  "model": "fund_requests.fundrequest",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-07T16:17:26.607Z",
+    "updated_at": "2026-11-07T16:17:26.607Z",
+    "study_program": 1,
+    "budget_year": 4,
+    "request_number": "REQ/2026/TI/E8DAAE09",
+    "subject": "Revisi",
+    "letter_date": "2026-11-13",
+    "created_by": [
+      "prodi"
+    ],
+    "status": "DRAFT",
+    "submitted_at": null,
+    "notes": ""
+  }
+},
+{
+  "model": "fund_requests.approvalhistory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T12:05:11.774Z",
+    "updated_at": "2026-10-31T12:05:11.774Z",
+    "fund_request": 1,
+    "action": "SUBMIT",
+    "actor": [
+      "prodi"
+    ],
+    "notes": "Pengajuan dikirim ke Fakultas.",
+    "acted_at": "2026-10-31T12:05:11.774Z"
+  }
+},
+{
+  "model": "fund_requests.approvalhistory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T12:18:20.559Z",
+    "updated_at": "2026-10-31T12:18:20.559Z",
+    "fund_request": 1,
+    "action": "CHECK",
+    "actor": [
+      "fakultas"
+    ],
+    "notes": "",
+    "acted_at": "2026-10-31T12:18:20.559Z"
+  }
+},
+{
+  "model": "fund_requests.approvalhistory",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-31T12:18:35.379Z",
+    "updated_at": "2026-10-31T12:18:35.380Z",
+    "fund_request": 1,
+    "action": "FORWARD",
+    "actor": [
+      "fakultas"
+    ],
+    "notes": "",
+    "acted_at": "2026-10-31T12:18:35.380Z"
+  }
+},
+{
+  "model": "fund_requests.approvalhistory",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-10-31T12:34:00.069Z",
+    "updated_at": "2026-10-31T12:34:00.069Z",
+    "fund_request": 1,
+    "action": "RECORD_APPROVAL",
+    "actor": [
+      "fakultas"
+    ],
+    "notes": "Keputusan Lembaga: Disetujui. Total diajukan: Rp7,500,000. Total disetujui: Rp7,500,000. Nomor referensi: YUS/12/UNPER/Kep.",
+    "acted_at": "2026-10-31T12:34:00.069Z"
+  }
+},
+{
+  "model": "fund_requests.fundrequestinstitutiondecision",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T12:34:00.064Z",
+    "updated_at": "2026-10-31T12:34:00.064Z",
+    "fund_request": 1,
+    "decision_status": "APPROVED",
+    "decision_date": "2026-10-31",
+    "reference_number": "YUS/12/UNPER/Kep",
+    "document": "fund_requests/decisions/2026/10/03._25-02-2026_-_Dekan_Fakultas_-_Surat_Pengajuan_Dana_Kolaborasi_Produk_Unggulan_Agribisnis_Mahasiswa.pdf",
+    "recorded_by": [
+      "fakultas"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "disbursements.institutiondisbursement",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T12:57:34.169Z",
+    "updated_at": "2026-10-31T12:57:34.169Z",
+    "fund_request": 1,
+    "amount": "5000000.00",
+    "disbursed_at": "2026-10-31",
+    "reference_number": "3110",
+    "recorded_by": [
+      "fakultas"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "disbursements.institutiondisbursement",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-31T12:58:29.570Z",
+    "updated_at": "2026-10-31T12:58:29.570Z",
+    "fund_request": 1,
+    "amount": "2500000.00",
+    "disbursed_at": "2026-10-31",
+    "reference_number": "31104",
+    "recorded_by": [
+      "fakultas"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "disbursements.facultyhandover",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-31T12:58:57.567Z",
+    "updated_at": "2026-10-31T12:58:57.567Z",
+    "fund_request": 1,
+    "amount": "7500000.00",
+    "handed_over_at": "2026-10-31",
+    "reference_number": "fak/12",
+    "recorded_by": [
+      "fakultas"
+    ],
+    "received_by": "Kaprodi",
+    "notes": ""
+  }
+},
+{
+  "model": "realizations.realization",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-04T03:16:29.483Z",
+    "updated_at": "2026-11-04T03:16:29.483Z",
+    "request_activity": 1,
+    "realization_date": "2026-11-05",
+    "description": "Honor Pemateri",
+    "amount": "2500000.00",
+    "evidence": "realizations/evidence/2026/11/Office_Bootlicker_Meme.png",
+    "recorded_by": [
+      "prodi"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "realizations.realization",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-04T03:17:09.816Z",
+    "updated_at": "2026-11-04T03:17:09.816Z",
+    "request_activity": 1,
+    "realization_date": "2026-11-05",
+    "description": "Snack",
+    "amount": "1000000.00",
+    "evidence": "realizations/evidence/2026/11/Office_Bootlicker_Meme_cI9G1Gs.png",
+    "recorded_by": [
+      "prodi"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "realizations.realization",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-11-04T03:17:47.245Z",
+    "updated_at": "2026-11-04T03:17:47.245Z",
+    "request_activity": 1,
+    "realization_date": "2026-11-04",
+    "description": "kebersihan",
+    "amount": "500000.00",
+    "evidence": "realizations/evidence/2026/11/Office_Bootlicker_Meme_dZfvIEP.png",
+    "recorded_by": [
+      "prodi"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "realizations.realization",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-11-04T03:18:10.976Z",
+    "updated_at": "2026-11-04T03:18:10.976Z",
+    "request_activity": 1,
+    "realization_date": "2026-11-04",
+    "description": "honor panitia",
+    "amount": "1000000.00",
+    "evidence": "realizations/evidence/2026/11/Office_Bootlicker_Meme_RK7BpPP.png",
+    "recorded_by": [
+      "prodi"
+    ],
+    "notes": ""
+  }
+},
+{
+  "model": "accountability.accountabilityreport",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-04T06:18:00.361Z",
+    "updated_at": "2026-11-04T06:19:05.565Z",
+    "fund_request": 1,
+    "status": "SUBMITTED",
+    "prepared_by": [
+      "prodi"
+    ],
+    "submitted_at": "2026-11-04T06:19:05.565Z",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "notes": "",
+    "revision_notes": ""
+  }
+},
+{
+  "model": "accountability.accountabilityattachment",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-04T06:18:59.668Z",
+    "updated_at": "2026-11-04T06:18:59.668Z",
+    "report": 1,
+    "title": "SK",
+    "file": "accountability/attachments/2026/11/03._25-02-2026_-_Dekan_Fakultas_-_Surat_Pengajuan_Dana_Kolaborasi_Produk_Unggulan_Agribisnis_Mahasiswa.pdf",
+    "uploaded_by": [
+      "prodi"
+    ]
+  }
+},
+{
+  "model": "accountability.accountabilityhistory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-04T06:19:05.568Z",
+    "updated_at": "2026-11-04T06:19:05.568Z",
+    "report": 1,
+    "action": "SUBMIT",
+    "actor": [
+      "prodi"
+    ],
+    "notes": "",
+    "acted_at": "2026-11-04T06:19:05.568Z"
+  }
+}
+]

@@ -1,0 +1,300 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Data Program Studi</h4>
+            <p class="text-muted mb-0">
+                Pengelolaan data Program Studi.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openProgramModal()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Tambah Program Studi
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="programTable"
+                       class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Kode</th>
+                            <th>Program Studi</th>
+                            <th>Fakultas</th>
+                            <th width="120">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal Program Studi -->
+<div class="modal fade" id="programModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="programForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="programModalTitle">
+                        Tambah Program Studi
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="id" id="programId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Fakultas</label>
+                        <select name="faculty_id" id="programFaculty"
+                                class="form-select" required>
+                            <option value="">-- Pilih Fakultas --</option>
+
+                            {% for faculty in faculties %}
+                                <option value="{{ faculty.id }}">
+                                    {{ faculty.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kode Program Studi</label>
+                        <input type="text" name="code" id="programCode"
+                               class="form-control" maxlength="20" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Program Studi</label>
+                        <input type="text" name="name" id="programName"
+                               class="form-control" maxlength="150" required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary"
+                            id="saveProgramButton">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+
+<script>
+const programModal = new bootstrap.Modal(
+    document.getElementById("programModal")
+);
+
+const programForm = document.getElementById("programForm");
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+let programTable;
+
+
+$(document).ready(function () {
+    programTable = $("#programTable").DataTable({
+        ajax: {
+            url: "{% url 'master_data:study_program_data' %}",
+            dataSrc: "data"
+        },
+
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => meta.row + 1
+            },
+            { data: "code" },
+            { data: "name" },
+            { data: "faculty_name" },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-warning me-1"
+                            onclick="editProgram(${row.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-danger"
+                            onclick="deleteProgram(${row.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            zeroRecords: "Data tidak ditemukan",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+        }
+    });
+});
+
+
+function openProgramModal() {
+    programForm.reset();
+
+    document.getElementById("programId").value = "";
+
+    document.getElementById("programModalTitle").textContent =
+        "Tambah Program Studi";
+
+    programModal.show();
+}
+
+
+async function editProgram(id) {
+    try {
+        const response = await fetch(
+            "{% url 'master_data:study_program_data' %}"
+        );
+
+        const result = await response.json();
+
+        const program = result.data.find(item => item.id === id);
+
+        if (!program) {
+            alert("Data Program Studi tidak ditemukan.");
+            return;
+        }
+
+        document.getElementById("programId").value = program.id;
+        document.getElementById("programFaculty").value =
+            program.faculty_id;
+        document.getElementById("programCode").value = program.code;
+        document.getElementById("programName").value = program.name;
+
+        document.getElementById("programModalTitle").textContent =
+            "Edit Program Studi";
+
+        programModal.show();
+
+    } catch (error) {
+        alert("Gagal mengambil data Program Studi.");
+    }
+}
+
+
+programForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("saveProgramButton");
+    button.disabled = true;
+
+    try {
+        const response = await fetch(
+            "{% url 'master_data:study_program_save' %}",
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                body: new FormData(programForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menyimpan data.");
+            return;
+        }
+
+        alert(result.message);
+
+        programModal.hide();
+        programTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menyimpan data.");
+    } finally {
+        button.disabled = false;
+    }
+});
+
+
+async function deleteProgram(id) {
+    if (!confirm("Yakin ingin menghapus Program Studi ini?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/master-data/program-studi/delete/${id}/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menghapus data.");
+            return;
+        }
+
+        alert(result.message);
+        programTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menghapus data.");
+    }
+}
+</script>
+{% endblock %}
+

@@ -1,0 +1,146 @@
+{% extends "master/base.html" %}
+
+{% block title %}Pengajuan Dana{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Pengajuan Dana</h4>
+            <p class="text-muted mb-0">
+                Daftar pengajuan dana Program Studi.
+            </p>
+        </div>
+
+        {% if user_role == "PRODI" %}
+        <a href="{% url 'fund_requests:create' %}"
+           class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Buat Pengajuan
+        </a>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover"
+                       id="fundRequestTable">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>No.</th>
+                            <th>Nomor Pengajuan</th>
+                            <th>Program Studi</th>
+                            <th>Perihal</th>
+                            <th>Tahun Anggaran</th>
+                            <th>Total Pengajuan</th>
+                            <th>Status Pengajuan</th>
+
+                            {% if user_role == "PRODI" %}
+                            <th>Status Penggunaan Dana</th>
+                            {% endif %}
+
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in fund_requests %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.request_number }}</td>
+                            <td>{{ item.study_program.name }}</td>
+                            <td>{{ item.subject }}</td>
+                            <td>{{ item.budget_year.name }}</td>
+                            <td>
+                                Rp {{ item.requested_total|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ item.get_status_display }}
+                            </td>
+
+                            {% if user_role == "PRODI" %}
+                            <td>
+                                {% if item.usage_status == "Pencairan dari Fakultas" %}
+                                    <span class="badge bg-warning text-dark">
+                                        {{ item.usage_status }}
+                                    </span>
+                                {% elif item.usage_status == "Belum digunakan" %}
+                                    <span class="badge bg-secondary">
+                                        {{ item.usage_status }}
+                                    </span>
+                                {% elif item.usage_status == "Sedang proses penggunaan" %}
+                                    <span class="badge bg-info text-dark">
+                                        {{ item.usage_status }}
+                                    </span>
+                                {% elif item.usage_status == "Proses penyusunan LPJ" %}
+                                    <span class="badge bg-primary">
+                                        {{ item.usage_status }}
+                                    </span>
+                                {% elif item.usage_status == "Dikirim ke Fakultas" %}
+                                    <span class="badge bg-success">
+                                        {{ item.usage_status }}
+                                     </span>
+                                {% elif item.usage_status == "LPJ Diterima Fakultas" %}
+                                    <span class="badge bg-success">
+                                        {{ item.usage_status }}
+                                    </span>
+                                {% else %}
+                                    {{ item.usage_status }}
+                                {% endif %}
+                            </td>
+                            {% endif %}
+
+                            <td>
+                                <a href="{% url 'fund_requests:detail' item.pk %}"
+                                class="btn btn-sm btn-info">
+                                    Detail
+                                </a>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="{% if user_role == 'PRODI' %}9{% else %}8{% endif %}"
+                                class="text-center text-muted">
+                                Belum ada pengajuan dana.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function () {
+    $('#fundRequestTable').DataTable({
+        responsive: true,
+        ordering: true,
+        pageLength: 10,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/id.json'
+        }
+    });
+});
+</script>
+{% endblock %}

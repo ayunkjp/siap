@@ -1,0 +1,72 @@
+from django.urls import path
+from . import views
+
+app_name = "fund_requests"
+
+urlpatterns = [
+    path(
+        "",
+        views.fund_request_index,
+        name="index",
+    ),
+    path(
+        "buat/",
+        views.fund_request_create,
+        name="create",
+    ),
+    path(
+        "<int:pk>/",
+        views.fund_request_detail,
+        name="detail",
+    ),
+    path(
+        "<int:pk>/kegiatan/tambah/",
+        views.fund_request_activity_add,
+        name="activity_add",
+    ),
+    path(
+        "kegiatan/<int:activity_id>/hapus/",
+        views.fund_request_activity_delete,
+        name="activity_delete",
+    ),
+    path(
+        "kegiatan/<int:activity_id>/rincian/tambah/",
+        views.fund_request_cost_item_save,
+        name="cost_item_add",
+    ),
+    path(
+        "kegiatan/<int:activity_id>/rincian/<int:cost_item_id>/ubah/",
+        views.fund_request_cost_item_save,
+        name="cost_item_edit",
+    ),
+    path(
+        "rincian/<int:cost_item_id>/hapus/",
+        views.fund_request_cost_item_delete,
+        name="cost_item_delete",
+    ),
+    path(
+        "<int:pk>/ajukan/",
+        views.fund_request_submit,
+        name="submit",
+    ),
+    path(
+        "<int:pk>/periksa/",
+        views.fund_request_check,
+        name="check",
+    ),
+    path(
+        "<int:pk>/revisi/",
+        views.fund_request_revision,
+        name="revision",
+    ),
+    path(
+        "<int:pk>/teruskan/",
+        views.fund_request_forward,
+        name="forward",
+    ),
+    path(
+        "<int:pk>/keputusan/",
+        views.fund_request_record_decision,
+        name="record_decision",
+    ),
+]

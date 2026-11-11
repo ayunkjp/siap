@@ -1,0 +1,278 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Data Fakultas</h4>
+            <p class="text-muted mb-0">Pengelolaan data fakultas.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openFacultyModal()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Tambah Fakultas
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="facultyTable" class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Kode Fakultas</th>
+                            <th>Nama Fakultas</th>
+                            <th>Alamat</th>
+                            <th width="150">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal Fakultas -->
+<div class="modal fade" id="facultyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="facultyForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="facultyModalTitle">
+                        Tambah Fakultas
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="facultyId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Kode Fakultas</label>
+                        <input type="text" name="code" id="facultyCode"
+                               class="form-control" maxlength="20" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Fakultas</label>
+                        <input type="text" name="name" id="facultyName"
+                               class="form-control" maxlength="150" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alamat</label>
+                        <textarea name="address" id="facultyAddress"
+                                  class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="saveFacultyButton">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- CSRF token untuk Fetch -->
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+
+<script>
+const facultyModalElement = document.getElementById("facultyModal");
+const facultyModal = new bootstrap.Modal(facultyModalElement);
+const facultyForm = document.getElementById("facultyForm");
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+let facultyTable;
+
+$(document).ready(function () {
+    facultyTable = $("#facultyTable").DataTable({
+        ajax: {
+            url: "{% url 'master_data:faculty_data' %}",
+            dataSrc: "data"
+        },
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => meta.row + 1
+            },
+            { data: "code" },
+            { data: "name" },
+            {
+                data: "address",
+                render: data => data || "-"
+            },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-warning me-1"
+                            onclick="editFaculty(${row.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger"
+                            onclick="deleteFaculty(${row.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            zeroRecords: "Data tidak ditemukan",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+        }
+    });
+});
+
+
+function openFacultyModal() {
+    facultyForm.reset();
+
+    document.getElementById("facultyId").value = "";
+    document.getElementById("facultyModalTitle").textContent =
+        "Tambah Fakultas";
+
+    facultyModal.show();
+}
+
+
+async function editFaculty(id) {
+    try {
+        const response = await fetch(
+            "{% url 'master_data:faculty_data' %}"
+        );
+
+        const result = await response.json();
+        const faculty = result.data.find(item => item.id === id);
+
+        if (!faculty) {
+            alert("Data fakultas tidak ditemukan.");
+            return;
+        }
+
+        document.getElementById("facultyId").value = faculty.id;
+        document.getElementById("facultyCode").value = faculty.code;
+        document.getElementById("facultyName").value = faculty.name;
+        document.getElementById("facultyAddress").value =
+            faculty.address || "";
+
+        document.getElementById("facultyModalTitle").textContent =
+            "Edit Fakultas";
+
+        facultyModal.show();
+
+    } catch (error) {
+        alert("Gagal mengambil data fakultas.");
+    }
+}
+
+
+facultyForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("saveFacultyButton");
+    button.disabled = true;
+
+    try {
+        const response = await fetch(
+            "{% url 'master_data:faculty_save' %}",
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                body: new FormData(facultyForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menyimpan data.");
+            return;
+        }
+
+        alert(result.message);
+        facultyModal.hide();
+        facultyTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menyimpan data.");
+    } finally {
+        button.disabled = false;
+    }
+});
+
+
+async function deleteFaculty(id) {
+    if (!confirm("Yakin ingin menghapus data fakultas ini?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/master-data/fakultas/delete/${id}/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menghapus data.");
+            return;
+        }
+
+        alert(result.message);
+        facultyTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menghapus data.");
+    }
+}
+</script>
+{% endblock %}

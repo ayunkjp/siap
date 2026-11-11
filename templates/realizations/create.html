@@ -1,0 +1,157 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="h3">Tambah Realisasi Penggunaan Dana</h1>
+            <p class="text-muted">
+                Pengajuan: {{ fund_request.request_number }}
+            </p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Informasi Komponen</h5>
+        </div>
+
+        <div class="card-body">
+            <p>
+                <strong>Komponen:</strong>
+                {{ activity.rkat_activity.name }}
+            </p>
+            <p>
+                <strong>Nominal disetujui:</strong>
+                Rp{{ approved|floatformat:2 }}
+            </p>
+            <p>
+                <strong>Sudah direalisasikan:</strong>
+                Rp{{ realized|floatformat:2 }}
+            </p>
+            <p>
+                <strong>Sisa nominal komponen:</strong>
+                Rp{{ remaining_activity|floatformat:2 }}
+            </p>
+            <hr>
+            <p>
+                <strong>Total dana diserahkan Fakultas:</strong>
+                Rp{{ handover_total|floatformat:2 }}
+            </p>
+            <p>
+                <strong>Total realisasi pengajuan:</strong>
+                Rp{{ request_realized|floatformat:2 }}
+            </p>
+            <p>
+                <strong>Sisa dana yang dapat direalisasikan:</strong>
+                Rp{{ remaining_handover|floatformat:2 }}
+            </p>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5 class="mb-0">Form Realisasi</h5>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="realization_date">
+                        Tanggal Pengeluaran
+                    </label>
+                    <input
+                        type="date"
+                        name="realization_date"
+                        id="realization_date"
+                        class="form-control"
+                        value="{{ request.POST.realization_date|default:'' }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Uraian Pengeluaran</label>
+                    <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        class="form-control"
+                        maxlength="255"
+                        value="{{ request.POST.description|default:'' }}"
+                        placeholder="Contoh: Pembelian ATK kegiatan"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Nominal Realisasi</label>
+                    <input
+                        type="number"
+                        name="amount"
+                        id="amount"
+                        class="form-control"
+                        min="0.01"
+                        step="0.01"
+                        max="{{ remaining_activity }}"
+                        placeholder="Masukkan nominal realisasi"
+                        value="{{ request.POST.amount|default:'' }}"
+                        required
+                    >
+                    <small class="form-text text-muted">
+                        Nominal dibatasi oleh sisa persetujuan komponen
+                        dan dana yang sudah diserahkan Fakultas.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="evidence">Bukti Pengeluaran</label>
+                    <input
+                        type="file"
+                        name="evidence"
+                        id="evidence"
+                        class="form-control-file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        required
+                    >
+                    <small class="form-text text-muted">
+                        Format PDF, JPG, JPEG, atau PNG. Maksimal 5 MB.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Keterangan Tambahan</label>
+                    <textarea
+                        name="notes"
+                        id="notes"
+                        class="form-control"
+                        rows="3"
+                    >{{ request.POST.notes|default:'' }}</textarea>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    {% if remaining_activity <= 0 or remaining_handover <= 0 %}
+                    disabled
+                    {% endif %}
+                >
+                    Simpan Realisasi
+                </button>
+
+                <a
+                    href="{% url 'realizations:index' %}"
+                    class="btn btn-secondary"
+                >
+                    Kembali
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

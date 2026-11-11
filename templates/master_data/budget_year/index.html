@@ -1,0 +1,322 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Tahun Anggaran</h4>
+            <p class="text-muted mb-0">
+                Pengelolaan periode tahun anggaran SIAP.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openYearModal()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Tambah Tahun Anggaran
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="yearTable"
+                       class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Tahun Anggaran</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Status</th>
+                            <th width="120">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Modal Tahun Anggaran -->
+<div class="modal fade" id="yearModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="yearForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="yearModalTitle">
+                        Tambah Tahun Anggaran
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="id" id="yearId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Tahun Anggaran</label>
+                        <input type="text" name="name" id="yearName"
+                               class="form-control"
+                               maxlength="20"
+                               placeholder="Contoh: 2027"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Mulai</label>
+                        <input type="date" name="start_date"
+                               id="yearStartDate"
+                               class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Selesai</label>
+                        <input type="date" name="end_date"
+                               id="yearEndDate"
+                               class="form-control" required>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="is_active"
+                               id="yearIsActive">
+
+                        <label class="form-check-label"
+                               for="yearIsActive">
+                            Aktifkan Tahun Anggaran
+                        </label>
+                    </div>
+
+                    <div class="form-text">
+                        Mengaktifkan tahun ini akan menonaktifkan
+                        tahun anggaran aktif sebelumnya.
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary"
+                            id="saveYearButton">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+
+<script>
+const yearModal = new bootstrap.Modal(
+    document.getElementById("yearModal")
+);
+
+const yearForm = document.getElementById("yearForm");
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+let yearTable;
+
+
+$(document).ready(function () {
+    yearTable = $("#yearTable").DataTable({
+        ajax: {
+            url: "{% url 'master_data:budget_year_data' %}",
+            dataSrc: "data"
+        },
+
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => meta.row + 1
+            },
+            { data: "name" },
+            { data: "start_date" },
+            { data: "end_date" },
+            {
+                data: "is_active",
+                render: function (data) {
+                    return data
+                        ? '<span class="badge bg-success">Aktif</span>'
+                        : '<span class="badge bg-secondary">Tidak Aktif</span>';
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-warning me-1"
+                            onclick="editYear(${row.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-danger"
+                            onclick="deleteYear(${row.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            zeroRecords: "Data tidak ditemukan",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+        }
+    });
+});
+
+
+function openYearModal() {
+    yearForm.reset();
+
+    document.getElementById("yearId").value = "";
+
+    document.getElementById("yearModalTitle").textContent =
+        "Tambah Tahun Anggaran";
+
+    yearModal.show();
+}
+
+
+async function editYear(id) {
+    try {
+        const response = await fetch(
+            "{% url 'master_data:budget_year_data' %}"
+        );
+
+        const result = await response.json();
+        const year = result.data.find(item => item.id === id);
+
+        if (!year) {
+            alert("Tahun anggaran tidak ditemukan.");
+            return;
+        }
+
+        document.getElementById("yearId").value = year.id;
+        document.getElementById("yearName").value = year.name;
+        document.getElementById("yearStartDate").value = year.start_date;
+        document.getElementById("yearEndDate").value = year.end_date;
+        document.getElementById("yearIsActive").checked = year.is_active;
+
+        document.getElementById("yearModalTitle").textContent =
+            "Edit Tahun Anggaran";
+
+        yearModal.show();
+
+    } catch (error) {
+        alert("Gagal mengambil data tahun anggaran.");
+    }
+}
+
+
+yearForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("saveYearButton");
+    button.disabled = true;
+
+    try {
+        const response = await fetch(
+            "{% url 'master_data:budget_year_save' %}",
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                body: new FormData(yearForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menyimpan tahun anggaran.");
+            return;
+        }
+
+        alert(result.message);
+
+        yearModal.hide();
+        yearTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menyimpan data.");
+    } finally {
+        button.disabled = false;
+    }
+});
+
+
+async function deleteYear(id) {
+    if (!confirm("Yakin ingin menghapus tahun anggaran ini?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/master-data/tahun-anggaran/delete/${id}/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menghapus data.");
+            return;
+        }
+
+        alert(result.message);
+        yearTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menghapus data.");
+    }
+}
+</script>
+{% endblock %}

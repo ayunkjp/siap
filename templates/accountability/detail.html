@@ -1,0 +1,403 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Detail LPJ{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="h3">Detail Laporan Pertanggungjawaban</h1>
+            <p class="text-muted mb-0">
+                {{ report.fund_request.request_number }}
+            </p>
+        </div>
+
+        <a href="{% url 'accountability:index' %}"
+           class="btn btn-secondary">
+            Kembali
+        </a>
+    </div>
+
+    <!-- Informasi LPJ -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Informasi LPJ</h5>
+        </div>
+        <p>
+    <strong>Diperiksa Oleh:</strong><br>
+    {% if report.reviewed_by %}
+        {{ report.reviewed_by.username }}
+    {% else %}
+        Belum diperiksa
+    {% endif %}
+</p>
+
+<p>
+    <strong>Tanggal Pemeriksaan:</strong><br>
+    {% if report.reviewed_at %}
+        {{ report.reviewed_at|date:"d-m-Y H:i" }}
+    {% else %}
+        -
+    {% endif %}
+</p>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        <strong>Nomor Pengajuan:</strong><br>
+                        {{ report.fund_request.request_number }}
+                    </p>
+
+                    <p>
+                        <strong>Judul Pengajuan:</strong><br>
+                        {{ report.fund_request.subject }}
+                    </p>
+
+                    <p>
+                        <strong>Program Studi:</strong><br>
+                        {{ report.fund_request.study_program.name }}
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Tahun Anggaran:</strong><br>
+                        {{ report.fund_request.budget_year.name }}
+                    </p>
+
+                    <p>
+                        <strong>Penyusun:</strong><br>
+                        {{ report.prepared_by.username }}
+                    </p>
+
+                    <p>
+                        <strong>Status LPJ:</strong><br>
+                        {% if report.status == "DRAFT" %}
+                            <span class="badge badge-secondary">Draft</span>
+                        {% elif report.status == "SUBMITTED" %}
+                            <span class="badge badge-info">Dikirim ke Fakultas</span>
+                        {% elif report.status == "REVISION" %}
+                            <span class="badge badge-warning">Perlu Revisi</span>
+                        {% elif report.status == "ACCEPTED" %}
+                            <span class="badge badge-success">Diterima Fakultas</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5>Ringkasan Realisasi</h5>
+            <h4>
+                Rp{{ report.realization_total|floatformat:2 }}
+            </h4>
+
+            {% if report.revision_notes %}
+            <div class="alert alert-warning mt-3">
+                <strong>Catatan Revisi Fakultas:</strong>
+                <p class="mb-0">{{ report.revision_notes }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Rincian Realisasi -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Rincian Realisasi Penggunaan Dana</h5>
+        </div>
+
+        <div class="card-body">
+            {% for row in realization_rows %}
+            <h6 class="font-weight-bold">
+                {{ row.activity.rkat_activity.name }}
+            </h6>
+
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>Uraian Pengeluaran</th>
+                            <th>Nominal</th>
+                            <th>Bukti</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in row.realizations %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.realization_date|date:"d-m-Y" }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>Rp{{ item.amount|floatformat:2 }}</td>
+                            <td>
+                                {% if item.evidence %}
+                                <a href="{% url 'realizations:evidence_download' item.pk %}"
+                                    class="btn btn-sm btn-primary">
+                                    <i class="bi bi-download"></i>
+                                    Unduh Bukti
+                                </a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Belum ada realisasi untuk aktivitas ini.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-right">
+                                Total Aktivitas
+                            </th>
+                            <th colspan="2">
+                                Rp{{ row.total|floatformat:2 }}
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% empty %}
+            <p class="text-muted">
+                Belum ada rincian aktivitas.
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Lampiran -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Dokumen Lampiran LPJ</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Dokumen</th>
+                            <th>File</th>
+                            <th>Diunggah Oleh</th>
+                            <th>Tanggal Upload</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in report.attachments.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>
+                                <a href="{% url 'accountability:attachment_download' item.pk %}"
+                                    class="btn btn-sm btn-primary">
+                                    <i class="bi bi-download"></i>
+                                    Unduh File
+                                </a>
+                            </td>
+                            <td>{{ item.uploaded_by.username }}</td>
+                            <td>{{ item.created_at|date:"d-m-Y H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Belum ada lampiran LPJ.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if can_edit %}
+            <hr>
+            <h6>Tambah Lampiran</h6>
+
+            <form
+                method="post"
+                enctype="multipart/form-data"
+                action="{% url 'accountability:attachment_add' report.pk %}"
+            >
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Nama Dokumen</label>
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        maxlength="255"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>File Lampiran</label>
+                    <input
+                        type="file"
+                        name="file"
+                        class="form-control-file"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx"
+                        required
+                    >
+                    <small class="form-text text-muted">
+                        Maksimal 10 MB.
+                    </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Upload Lampiran
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Aksi Prodi -->
+    {% if can_edit %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Pengiriman LPJ</h5>
+        </div>
+
+        <div class="card-body">
+            <form
+                method="post"
+                action="{% url 'accountability:submit' report.pk %}"
+            >
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Keterangan Pengiriman</label>
+                    <textarea
+                        name="notes"
+                        class="form-control"
+                        rows="3"
+                    >{{ report.notes }}</textarea>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                    {% if not report.attachments.exists %}
+                    disabled
+                    {% endif %}
+                >
+                    Kirim LPJ ke Fakultas
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Aksi Fakultas -->
+    {% if can_review %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Pemeriksaan Fakultas</h5>
+        </div>
+
+        <div class="card-body">
+            <form
+                method="post"
+                action="{% url 'accountability:revision' report.pk %}"
+                class="mb-4"
+            >
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Catatan Revisi</label>
+                    <textarea
+                        name="notes"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Tuliskan alasan pengembalian LPJ..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Kembalikan untuk Revisi
+                </button>
+            </form>
+
+            <hr>
+
+            <form
+                method="post"
+                action="{% url 'accountability:accept' report.pk %}"
+            >
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Catatan Pemeriksaan</label>
+                    <textarea
+                        name="notes"
+                        class="form-control"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Terima LPJ
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Riwayat -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Riwayat LPJ</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>Aktivitas</th>
+                            <th>Pengguna</th>
+                            <th>Catatan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in report.histories.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.acted_at|date:"d-m-Y H:i" }}</td>
+                            <td>{{ item.get_action_display }}</td>
+                            <td>{{ item.actor.username }}</td>
+                            <td>{{ item.notes|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Belum ada riwayat LPJ.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

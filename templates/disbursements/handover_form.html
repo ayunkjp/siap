@@ -1,0 +1,161 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Penyerahan Dana ke Prodi{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h4>Pencatatan Penyerahan Dana ke Prodi</h4>
+        <p class="text-muted mb-0">
+            Catat dana yang telah diserahkan Fakultas kepada Program Studi.
+        </p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Informasi Pengajuan</strong>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor Pengajuan</small>
+                    <div class="fw-bold">
+                        {{ fund_request.request_number }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Program Studi</small>
+                    <div class="fw-bold">
+                        {{ fund_request.study_program.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Disetujui Lembaga</small>
+                    <div class="fw-bold text-primary">
+                        Rp {{ summary.approved_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Diterima Fakultas</small>
+                    <div class="fw-bold text-success">
+                        Rp {{ summary.received_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Sudah Diserahkan ke Prodi</small>
+                    <div class="fw-bold">
+                        Rp {{ summary.handed_over_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Sisa Dana di Fakultas</small>
+                    <div class="fw-bold text-danger">
+                        Rp {{ summary.remaining_at_faculty|floatformat:0 }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <strong>Form Penyerahan Dana</strong>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="card-body">
+
+                <div class="form-group mb-3">
+                    <label>
+                        Nominal Diserahkan
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input type="number"
+                           name="amount"
+                           class="form-control"
+                           min="0.01"
+                           max="{{ summary.remaining_at_faculty }}"
+                           step="0.01"
+                           required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>
+                        Tanggal Penyerahan
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input type="date"
+                           name="handed_over_at"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Nomor Bukti Penyerahan</label>
+
+                    <input type="text"
+                           name="reference_number"
+                           class="form-control"
+                           placeholder="Nomor bukti penyerahan">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Nama Penerima Dana</label>
+
+                    <input type="text"
+                           name="received_by"
+                           class="form-control"
+                           placeholder="Nama pihak Prodi yang menerima dana">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Keterangan</label>
+
+                    <textarea name="notes"
+                              class="form-control"
+                              rows="3"></textarea>
+                </div>
+
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'disbursements:index' %}"
+                   class="btn btn-secondary">
+                    Kembali
+                </a>
+
+                <button type="submit"
+                        class="btn btn-success"
+                        {% if summary.remaining_at_faculty <= 0 %}disabled{% endif %}
+                        onclick="return confirm('Simpan penyerahan dana kepada Prodi?')">
+                    <i class="fas fa-save"></i>
+                    Simpan Penyerahan
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

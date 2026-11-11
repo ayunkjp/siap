@@ -1,0 +1,49 @@
+
+<header class="top-navbar d-flex align-items-center justify-content-between">
+
+    <div class="d-flex align-items-center gap-3">
+        <button
+            class="btn btn-light d-lg-none"
+            type="button"
+            id="sidebarToggle"
+        >
+            <i class="bi bi-list fs-5"></i>
+        </button>
+
+        <div>
+            <span class="fw-semibold">Sistem Informasi Ajuan Prodi</span>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button
+            class="btn btn-light dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+        >
+            <i class="bi bi-person-circle me-1"></i>
+            {{ request.user.username }}
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <span class="dropdown-item-text text-muted small">
+                    {{ request.user.profile.get_role_display }}
+                </span>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+                <form method="POST" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+</header>

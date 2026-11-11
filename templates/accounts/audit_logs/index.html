@@ -1,0 +1,472 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Audit Log - SIAP{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css"
+>
+
+<style>
+    .audit-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    }
+
+    .audit-filter label {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .audit-description {
+        min-width: 250px;
+        white-space: normal;
+    }
+
+    .audit-badge {
+        font-size: 11px;
+        padding: 6px 9px;
+    }
+
+    #auditTable td {
+        vertical-align: middle;
+    }
+
+    .detail-json {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 12px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">
+                <i class="bi bi-clock-history me-2"></i>
+                Audit Log
+            </h4>
+            <p class="text-muted mb-0">
+                Riwayat aktivitas dan perubahan data dalam sistem SIAP.
+            </p>
+        </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="card audit-card mb-4">
+        <div class="card-body">
+
+            <div class="row g-3 audit-filter">
+
+                <div class="col-md-3">
+                    <label>Modul</label>
+                    <select id="filterModule" class="form-select">
+                        <option value="">Semua Modul</option>
+                        {% for module in app_labels %}
+                            <option value="{{ module }}">
+                                {{ module|title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Jenis Aktivitas</label>
+                    <select id="filterAction" class="form-select">
+                        <option value="">Semua Aktivitas</option>
+                        {% for value, label in audit_actions %}
+                            <option value="{{ value }}">
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Pengguna</label>
+                    <select id="filterUser" class="form-select">
+                        <option value="">Semua Pengguna</option>
+                        {% for username in audit_users %}
+                            <option value="{{ username }}">
+                                {{ username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Kata Kunci</label>
+                    <input
+                        type="text"
+                        id="filterSearch"
+                        class="form-control"
+                        placeholder="Cari aktivitas..."
+                    >
+                </div>
+
+                <div class="col-md-3">
+                    <label>Tanggal Mulai</label>
+                    <input
+                        type="date"
+                        id="filterDateFrom"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="col-md-3">
+                    <label>Tanggal Akhir</label>
+                    <input
+                        type="date"
+                        id="filterDateTo"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="col-md-6 d-flex align-items-end gap-2">
+                    <button
+                        type="button"
+                        id="btnFilter"
+                        class="btn btn-primary"
+                    >
+                        <i class="bi bi-search me-1"></i>
+                        Terapkan Filter
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnReset"
+                        class="btn btn-outline-secondary"
+                    >
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>
+                        Reset
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TABEL AUDIT -->
+    <div class="card audit-card">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table
+                    id="auditTable"
+                    class="table table-bordered table-hover w-100"
+                >
+                    <thead class="table-light">
+                        <tr>
+                            <th width="45">No.</th>
+                            <th>Waktu</th>
+                            <th>Pengguna</th>
+                            <th>Modul</th>
+                            <th>Aktivitas</th>
+                            <th>Objek</th>
+                            <th>Deskripsi</th>
+                            <th width="80">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL DETAIL -->
+<div
+    class="modal fade"
+    id="auditDetailModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Detail Audit Log
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-sm table-bordered">
+                    <tbody>
+                        <tr>
+                            <th width="180">Waktu</th>
+                            <td id="detailTime"></td>
+                        </tr>
+                        <tr>
+                            <th>Pengguna</th>
+                            <td id="detailUser"></td>
+                        </tr>
+                        <tr>
+                            <th>Modul</th>
+                            <td id="detailModule"></td>
+                        </tr>
+                        <tr>
+                            <th>Model</th>
+                            <td id="detailModel"></td>
+                        </tr>
+                        <tr>
+                            <th>ID Objek</th>
+                            <td id="detailObject"></td>
+                        </tr>
+                        <tr>
+                            <th>Deskripsi</th>
+                            <td id="detailDescription"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h6 class="fw-bold mt-4 mb-2">
+                    Perubahan Data
+                </h6>
+
+                <pre id="detailChanges" class="detail-json"></pre>
+
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Tutup
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    const auditUrl = "{% url 'accounts:audit_log_data' %}";
+
+    function escapeHtml(value) {
+        return $("<div>").text(value ?? "").html();
+    }
+
+    function actionBadge(action) {
+        const colors = {
+            CREATE: "success",
+            UPDATE: "primary",
+            DELETE: "danger",
+            SUBMIT: "info",
+            APPROVE: "success",
+            REJECT: "danger",
+            REVISION: "warning",
+            FORWARD: "info",
+            ACCEPT: "success",
+            OTHER: "secondary"
+        };
+
+        const color = colors[action] || "secondary";
+
+        return `
+            <span class="badge bg-${color} audit-badge">
+                ${escapeHtml(action)}
+            </span>
+        `;
+    }
+
+    
+    const table = $("#auditTable").DataTable({
+        processing: true,
+        serverSide: true,
+        searching: false,
+        pageLength: 25,
+        lengthMenu: [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+        order: [[1, "desc"]],
+
+        ajax: {
+            url: auditUrl,
+            type: "GET",
+
+            data: function (d) {
+                // Filter khusus SIAP
+                d.app_label = $("#filterModule").val();
+                d.action = $("#filterAction").val();
+                d.username = $("#filterUser").val();
+                d.date_from = $("#filterDateFrom").val();
+                d.date_to = $("#filterDateTo").val();
+
+                // Pencarian menggunakan format DataTables
+                d.search.value = $("#filterSearch").val();
+            }
+        },
+
+        columns: [
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                data: "created_at"
+            },
+            {
+                data: "username",
+                render: function (data) {
+                    return escapeHtml(data);
+                }
+            },
+            {
+                data: "app_label",
+                render: function (data) {
+                    return escapeHtml(data);
+                }
+            },
+            {
+                data: "action",
+                render: function (data) {
+                    return actionBadge(data);
+                }
+            },
+            {
+                data: "object_repr",
+                render: function (data, type, row) {
+                    return `
+                        <div>
+                            <strong>${escapeHtml(data)}</strong>
+                            <div class="text-muted small">
+                                ${escapeHtml(row.model_name)}
+                                #${escapeHtml(row.object_id)}
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                data: "description",
+                className: "audit-description",
+                render: function (data) {
+                    return escapeHtml(data);
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-primary btn-detail"
+                            data-id="${row.id}"
+                        >
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+
+        language: {
+            processing: "Memuat data...",
+            emptyTable: "Belum ada aktivitas tercatat.",
+            zeroRecords: "Data tidak ditemukan.",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            infoFiltered: "(difilter dari _MAX_ total data)",
+            paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "Berikutnya",
+                previous: "Sebelumnya"
+            }
+        }
+    });
+
+
+    $("#btnFilter").on("click", function () {
+        table.ajax.reload();
+    });
+
+    $("#btnReset").on("click", function () {
+        $("#filterModule").val("");
+        $("#filterAction").val("");
+        $("#filterUser").val("");
+        $("#filterSearch").val("");
+        $("#filterDateFrom").val("");
+        $("#filterDateTo").val("");
+
+        table.ajax.reload();
+    });
+
+    $("#filterSearch").on("keypress", function (event) {
+        if (event.which === 13) {
+            table.ajax.reload();
+        }
+    });
+
+    $("#auditTable").on("click", ".btn-detail", function () {
+        const row = table.row($(this).closest("tr")).data();
+
+        if (!row) {
+            return;
+        }
+
+        $("#detailTime").text(row.created_at);
+        $("#detailUser").text(row.username);
+        $("#detailModule").text(row.app_label);
+        $("#detailModel").text(row.model_name);
+        $("#detailObject").text(row.object_id);
+        $("#detailDescription").text(row.description);
+
+        $("#detailChanges").text(
+            JSON.stringify(row.changes || {}, null, 4)
+        );
+
+        const modal = new bootstrap.Modal(
+            document.getElementById("auditDetailModal")
+        );
+
+        modal.show();
+    });
+
+});
+</script>
+
+{% endblock %}

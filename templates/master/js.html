@@ -1,0 +1,33 @@
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Sidebar Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggle = document.getElementById("sidebarToggle");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        function openSidebar() {
+            if (sidebar) sidebar.classList.add("show");
+            if (overlay) overlay.classList.add("show");
+        }
+
+        function closeSidebar() {
+            if (sidebar) sidebar.classList.remove("show");
+            if (overlay) overlay.classList.remove("show");
+        }
+
+        if (toggle) {
+            toggle.addEventListener("click", openSidebar);
+        }
+
+        if (overlay) {
+            overlay.addEventListener("click", closeSidebar);
+        }
+    });
+</script>

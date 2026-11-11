@@ -1,0 +1,408 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Manajemen Pengguna</h4>
+            <p class="text-muted mb-0">
+                Pengelolaan akun ADMIN, PRODI, dan FAKULTAS.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openUserModal()">
+            <i class="bi bi-person-plus me-1"></i>
+            Tambah Pengguna
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="userTable"
+                       class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Username</th>
+                            <th>Nama</th>
+                            <th>Role</th>
+                            <th>Unit</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Modal Pengguna -->
+<div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form id="userForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">
+                        Tambah Pengguna
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="id" id="userId">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username"
+                                   id="username" class="form-control"
+                                   maxlength="150" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email"
+                                   id="email" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Depan</label>
+                            <input type="text" name="first_name"
+                                   id="firstName" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Belakang</label>
+                            <input type="text" name="last_name"
+                                   id="lastName" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Role</label>
+                            <select name="role" id="userRole"
+                                    class="form-select" required>
+                                <option value="">-- Pilih Role --</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="FAKULTAS">Fakultas</option>
+                                <option value="PRODI">Program Studi</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password"
+                                   id="password" class="form-control"
+                                   minlength="8" autocomplete="new-password">
+                            <small class="text-muted">
+                                Minimal 8 karakter. Kosongkan ketika edit
+                                jika tidak ingin mengubah password.
+                            </small>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="facultyGroup"
+                             style="display:none;">
+                            <label class="form-label">Fakultas</label>
+                            <select name="faculty_id" id="facultyId"
+                                    class="form-select">
+                                <option value="">-- Pilih Fakultas --</option>
+                                {% for faculty in faculties %}
+                                    <option value="{{ faculty.id }}">
+                                        {{ faculty.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="studyProgramGroup"
+                             style="display:none;">
+                            <label class="form-label">Program Studi</label>
+                            <select name="study_program_id"
+                                    id="studyProgramId"
+                                    class="form-select">
+                                <option value="">-- Pilih Program Studi --</option>
+                                {% for program in study_programs %}
+                                    <option value="{{ program.id }}">
+                                        {{ program.name }} -
+                                        {{ program.faculty.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary"
+                            id="saveUserButton">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+
+<script>
+const userModal = new bootstrap.Modal(
+    document.getElementById("userModal")
+);
+
+const userForm = document.getElementById("userForm");
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+let userTable;
+
+
+$(document).ready(function () {
+    userTable = $("#userTable").DataTable({
+        ajax: {
+            url: "{% url 'accounts:user_management_data' %}",
+            dataSrc: "data"
+        },
+
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => meta.row + 1
+            },
+            { data: "username" },
+            {
+                data: null,
+                render: row =>
+                    `${row.first_name || ""} ${row.last_name || ""}`.trim() || "-"
+            },
+            { data: "role_display" },
+            {
+                data: null,
+                render: row => {
+                    if (row.role === "PRODI") {
+                        return row.study_program_name;
+                    }
+
+                    if (row.role === "FAKULTAS") {
+                        return row.faculty_name;
+                    }
+
+                    return "Sistem";
+                }
+            },
+            {
+                data: "is_active",
+                render: active => active
+                    ? '<span class="badge bg-success">Aktif</span>'
+                    : '<span class="badge bg-secondary">Nonaktif</span>'
+            },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: row => `
+                    <button class="btn btn-sm btn-warning me-1"
+                        onclick="editUser(${row.id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+
+                    <button class="btn btn-sm ${row.is_active ? "btn-danger" : "btn-success"}"
+                        onclick="toggleUserStatus(${row.id})">
+                        <i class="bi ${row.is_active ? "bi-person-x" : "bi-person-check"}"></i>
+                    </button>
+                `
+            }
+        ],
+
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            zeroRecords: "Data tidak ditemukan",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+        }
+    });
+});
+
+
+function updateRoleFields() {
+    const role = document.getElementById("userRole").value;
+
+    document.getElementById("facultyGroup").style.display =
+        role === "FAKULTAS" ? "block" : "none";
+
+    document.getElementById("studyProgramGroup").style.display =
+        role === "PRODI" ? "block" : "none";
+
+    document.getElementById("facultyId").required =
+        role === "FAKULTAS";
+
+    document.getElementById("studyProgramId").required =
+        role === "PRODI";
+}
+
+
+document.getElementById("userRole").addEventListener(
+    "change",
+    updateRoleFields
+);
+
+
+function openUserModal() {
+    userForm.reset();
+
+    document.getElementById("userId").value = "";
+    document.getElementById("userModalTitle").textContent =
+        "Tambah Pengguna";
+
+    updateRoleFields();
+    userModal.show();
+}
+
+
+async function editUser(id) {
+    try {
+        const response = await fetch(
+            "{% url 'accounts:user_management_data' %}"
+        );
+
+        const result = await response.json();
+        const user = result.data.find(item => item.id === id);
+
+        if (!user) {
+            alert("Pengguna tidak ditemukan.");
+            return;
+        }
+
+        document.getElementById("userId").value = user.id;
+        document.getElementById("username").value = user.username;
+        document.getElementById("email").value = user.email;
+        document.getElementById("firstName").value = user.first_name;
+        document.getElementById("lastName").value = user.last_name;
+        document.getElementById("userRole").value = user.role;
+        document.getElementById("password").value = "";
+
+        updateRoleFields();
+
+        document.getElementById("facultyId").value =
+            user.faculty_id || "";
+
+        document.getElementById("studyProgramId").value =
+            user.study_program_id || "";
+
+        document.getElementById("userModalTitle").textContent =
+            "Edit Pengguna";
+
+        userModal.show();
+
+    } catch (error) {
+        alert("Gagal mengambil data pengguna.");
+    }
+}
+
+
+userForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("saveUserButton");
+    button.disabled = true;
+
+    try {
+        const response = await fetch(
+            "{% url 'accounts:user_management_save' %}",
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                body: new FormData(userForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menyimpan akun.");
+            return;
+        }
+
+        alert(result.message);
+        userModal.hide();
+        userTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menyimpan akun.");
+    } finally {
+        button.disabled = false;
+    }
+});
+
+
+async function toggleUserStatus(id) {
+    if (!confirm("Yakin ingin mengubah status akun ini?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/manajemen-pengguna/status/${id}/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal mengubah status akun.");
+            return;
+        }
+
+        alert(result.message);
+        userTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat mengubah status akun.");
+    }
+}
+</script>
+{% endblock %}

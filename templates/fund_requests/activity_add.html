@@ -1,0 +1,85 @@
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Tambah Kegiatan Pengajuan</h3>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Nomor Pengajuan</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ fund_request.request_number }}"
+                        readonly
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Kegiatan RKAT</label>
+                    <select name="activity_id" class="form-control" required>
+                        <option value="">-- Pilih Kegiatan --</option>
+                        {% for activity in available_activities %}
+                            <option value="{{ activity.pk }}">
+                                {{ activity.name }}
+                                — Alokasi:
+                                {{ activity.allocation.amount|floatformat:0 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    {% if not available_activities %}
+                        <small class="text-danger">
+                            Tidak ada kegiatan RKAT yang tersedia untuk ditambahkan.
+                        </small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Nominal Pengajuan</label>
+                    <input
+                        type="number"
+                        name="requested_amount"
+                        class="form-control"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan</label>
+                    <textarea
+                        name="notes"
+                        class="form-control"
+                        rows="3"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    {% if not available_activities %}disabled{% endif %}
+                >
+                    Simpan Kegiatan
+                </button>
+
+                <a
+                    href="{% url 'fund_requests:detail' fund_request.pk %}"
+                    class="btn btn-secondary"
+                >
+                    Kembali
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

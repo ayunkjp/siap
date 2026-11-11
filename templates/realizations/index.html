@@ -1,0 +1,175 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="h3">Realisasi Penggunaan Dana</h1>
+            <p class="text-muted">
+                Daftar pengajuan yang sudah disetujui dan dapat direalisasikan.
+            </p>
+        </div>
+    </div>
+
+
+<div class="row mb-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <h6>Total Disetujui Lembaga</h6>
+                <h4>
+                    Rp{{ summary.approved|floatformat:2 }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <h6>Total Diterima dari Fakultas</h6>
+                <h4>
+                    Rp{{ summary.handover|floatformat:2 }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <h6>Total Sudah Direalisasikan</h6>
+                <h4>
+                    Rp{{ summary.realized|floatformat:2 }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning h-100">
+            <div class="card-body">
+                <h6>Sisa Dana Belum Digunakan</h6>
+                <h4>
+                    Rp{{ summary.remaining|floatformat:2 }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-2">
+            <strong>Persentase Realisasi Dana Diterima</strong>
+            <strong>
+                {{ summary.percentage|floatformat:2 }}%
+            </strong>
+        </div>
+
+        <div class="progress" style="height: 22px;">
+            <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: {{ summary.percentage }}%;"
+                aria-valuenow="{{ summary.percentage }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+                {{ summary.percentage|floatformat:2 }}%
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    {% for row in rows %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-1">
+                {{ row.fund_request.request_number }}
+            </h5>
+            <small class="text-muted">
+                {{ row.fund_request.subject }}
+                | Tahun Anggaran {{ row.fund_request.budget_year.name }}
+            </small>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <strong>Dana diserahkan Fakultas</strong><br>
+                    Rp{{ row.handover_total|floatformat:2 }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Total realisasi</strong><br>
+                    Rp{{ row.realization_total|floatformat:2 }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Sisa dana yang diterima</strong><br>
+                    Rp{{ row.remaining_handover|floatformat:2 }}
+                </div>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Komponen RKAT</th>
+                            <th>Nominal Disetujui</th>
+                            <th>Sudah Direalisasikan</th>
+                            <th>Sisa Komponen</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in row.activities %}
+                        <tr>
+                            <td>{{ item.activity.rkat_activity.name }}</td>
+                            <td>Rp{{ item.approved|floatformat:2 }}</td>
+                            <td>Rp{{ item.realized|floatformat:2 }}</td>
+                            <td>Rp{{ item.remaining|floatformat:2 }}</td>
+                            <td>
+                                {% if item.remaining > 0 %}
+                                <a
+                                    href="{% url 'realizations:create' item.activity.pk %}"
+                                    class="btn btn-sm btn-primary"
+                                >
+                                    Tambah Realisasi
+                                </a>
+                                {% else %}
+                                <span class="badge badge-success">
+                                    Batas tercapai
+                                </span>
+                                {% endif %}
+                                <a
+                href="{% url 'realizations:history' item.activity.pk %}"
+                class="btn btn-sm btn-info"
+            >
+                Riwayat
+            </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Belum ada komponen pengajuan.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        Belum ada pengajuan yang disetujui untuk direalisasikan.
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

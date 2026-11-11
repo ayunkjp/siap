@@ -1,0 +1,471 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Detail Pengajuan Dana{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Detail Pengajuan Dana</h4>
+            <p class="text-muted mb-0">
+                Informasi dan rincian pengajuan dana Prodi.
+            </p>
+        </div>
+
+        <a href="{% url 'fund_requests:index' %}"
+           class="btn btn-secondary">
+            Kembali
+        </a>
+    </div>
+
+    <!-- NOTIFIKASI -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- INFORMASI PENGAJUAN -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Informasi Pengajuan</strong>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor Pengajuan</small>
+                    <div class="fw-bold">
+                        {{ fund_request.request_number }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Status</small>
+                    <div class="fw-bold">
+                        {{ fund_request.get_status_display }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Program Studi</small>
+                    <div class="fw-bold">
+                        {{ fund_request.study_program.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tahun Anggaran</small>
+                    <div class="fw-bold">
+                        {{ fund_request.budget_year.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Perihal</small>
+                    <div class="fw-bold">
+                        {{ fund_request.subject }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tanggal Surat</small>
+                    <div class="fw-bold">
+                        {{ fund_request.letter_date|date:"d-m-Y" }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Pengajuan</small>
+                    <div class="fw-bold text-primary">
+                        Rp {{ fund_request.requested_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Disetujui</small>
+                    <div class="fw-bold text-success">
+                        Rp {{ fund_request.approved_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <small class="text-muted">Catatan</small>
+                    <div>
+                        {{ fund_request.notes|default:"-" }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% if user_role == "FAKULTAS" %}
+
+    {% if fund_request.status == "SUBMITTED" or fund_request.status == "FACULTY_CHECKED" %}
+
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <strong>
+                    <i class="fas fa-clipboard-check"></i>
+                    Pemeriksaan Fakultas
+                </strong>
+            </div>
+
+            <div class="card-body">
+
+                {% if fund_request.status == "SUBMITTED" %}
+
+                    <p>
+                        Pengajuan telah dikirim oleh Prodi dan menunggu
+                        pemeriksaan Fakultas.
+                    </p>
+
+                    <form
+                        method="POST"
+                        action="{% url 'fund_requests:check' fund_request.pk %}"
+                        class="mb-3"
+                    >
+                        {% csrf_token %}
+
+                        <div class="form-group mb-3">
+                            <label>Catatan Pemeriksaan (Opsional)</label>
+                            <textarea
+                                name="notes"
+                                class="form-control"
+                                rows="2"
+                                placeholder="Catatan hasil pemeriksaan Fakultas..."
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            onclick="return confirm('Tandai pengajuan ini sudah diperiksa?')"
+                        >
+                            <i class="fas fa-check"></i>
+                            Tandai Sudah Diperiksa
+                        </button>
+                    </form>
+
+                {% endif %}
+
+                {% if fund_request.status == "SUBMITTED" or fund_request.status == "FACULTY_CHECKED" %}
+
+                    <hr>
+
+                    <form
+                        method="POST"
+                        action="{% url 'fund_requests:revision' fund_request.pk %}"
+                        class="mb-3"
+                        onsubmit="return confirm('Kembalikan pengajuan kepada Prodi untuk revisi?')"
+                    >
+                        {% csrf_token %}
+
+                        <div class="form-group mb-3">
+                            <label>
+                                Catatan Revisi
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <textarea
+                                name="notes"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Jelaskan bagian yang harus diperbaiki oleh Prodi..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-undo"></i>
+                            Kembalikan untuk Revisi
+                        </button>
+                    </form>
+
+                {% endif %}
+
+                {% if fund_request.status == "FACULTY_CHECKED" %}
+
+                    <hr>
+
+                    <form
+                        method="POST"
+                        action="{% url 'fund_requests:forward' fund_request.pk %}"
+                        onsubmit="return confirm('Teruskan pengajuan ini ke Lembaga?')"
+                    >
+                        {% csrf_token %}
+
+                        <div class="form-group mb-3">
+                            <label>Catatan Penerusan (Opsional)</label>
+                            <textarea
+                                name="notes"
+                                class="form-control"
+                                rows="2"
+                                placeholder="Catatan penerusan ke Lembaga..."
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Teruskan ke Lembaga
+                        </button>
+                    </form>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endif %}
+
+    <!-- KEGIATAN PENGAJUAN -->
+    <div class="card mb-4">
+{% if user_role == "FAKULTAS" and fund_request.status == "FORWARDED" %}
+    <div class="card mb-4 border-primary">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Keputusan Lembaga</strong>
+                <div class="text-muted small">
+                    Pengajuan telah diteruskan dan menunggu pencatatan keputusan.
+                </div>
+            </div>
+
+            <a href="{% url 'fund_requests:record_decision' fund_request.pk %}"
+               class="btn btn-primary">
+                <i class="fas fa-file-signature"></i>
+                Catat Keputusan Lembaga
+            </a>
+        </div>
+    </div>
+{% endif %}
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>Rincian Kegiatan Pengajuan</strong>
+
+            {% if can_edit %}
+                <span class="badge bg-warning text-dark">
+                    Draft / Revisi
+                </span>
+            {% endif %}
+
+            {% if can_edit and activities %}
+            <div class="border-top pt-3 mt-3">
+
+                <div class="alert alert-warning">
+                    <strong>Perhatian!</strong>
+                    Setelah pengajuan dikirim ke Fakultas,
+                    Prodi tidak dapat mengubah kegiatan dan rincian biaya
+                    selama pengajuan sedang diproses.
+                </div>
+
+                <form
+                    method="POST"
+                    action="{% url 'fund_requests:submit' fund_request.pk %}"
+                    onsubmit="return confirm('Apakah kamu yakin ingin mengirim pengajuan ini ke Fakultas? Pastikan seluruh kegiatan dan rincian biaya sudah benar.')"
+                >
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Ajukan ke Fakultas
+                    </button>
+                </form>
+
+            </div>
+        {% endif %}
+        </div>
+        
+
+        <div class="card-body">
+
+            <!-- TOMBOL TAMBAH KEGIATAN -->
+            {% if can_edit %}
+                <div class="mb-3">
+                    <a href="{% url 'fund_requests:activity_add' fund_request.pk %}"
+                       class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Tambah Kegiatan RKAT
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th width="5%">No.</th>
+                            <th>Nama Kegiatan RKAT</th>
+                            <th>Nominal Diajukan</th>
+                            <th>Nominal Disetujui</th>
+                            <th>Rincian Biaya</th>
+                            {% if can_edit %}
+                                <th width="15%">Aksi</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in activities %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+
+                                <td>
+                                    <strong>
+                                        {{ item.rkat_activity.name }}
+                                    </strong>
+
+                                    {% if item.notes %}
+                                        <div class="small text-muted mt-1">
+                                            Catatan: {{ item.notes }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    Rp {{ item.requested_amount|floatformat:0 }}
+                                </td>
+
+                                <td>
+                                    {% if item.approved_amount != None %}
+                                        Rp {{ item.approved_amount|floatformat:0 }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+
+                                <!-- RINCIAN BIAYA -->
+                                <td>
+                                    {% for cost in item.cost_items.all %}
+                                        <div class="border-bottom py-2">
+
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <strong>
+                                                        {{ cost.description }}
+                                                    </strong>
+
+                                                    <div class="small text-muted">
+                                                        {{ cost.quantity|floatformat:2 }}
+                                                        {{ cost.unit }}
+                                                        ×
+                                                        Rp {{ cost.unit_price|floatformat:0 }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <strong>
+                                                        Rp {{ cost.total_amount|floatformat:0 }}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            {% if can_edit %}
+                                                <div class="mt-2">
+
+                                                    <a href="{% url 'fund_requests:cost_item_edit' item.pk cost.pk %}"
+                                                       class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-edit"></i>
+                                                        Edit
+                                                    </a>
+
+                                                    <form method="POST"
+                                                          action="{% url 'fund_requests:cost_item_delete' cost.pk %}"
+                                                          class="d-inline"
+                                                          onsubmit="return confirm('Hapus rincian biaya ini?')">
+
+                                                        {% csrf_token %}
+
+                                                        <button type="submit"
+                                                                class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                            Hapus
+                                                        </button>
+
+                                                    </form>
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+
+                                    {% empty %}
+                                        <span class="text-muted">
+                                            Belum ada rincian biaya.
+                                        </span>
+                                    {% endfor %}
+
+                                    <div class="mt-2 text-primary">
+                                        <strong>
+                                            Total Rincian:
+                                            Rp {{ item.cost_total|floatformat:0 }}
+                                        </strong>
+                                    </div>
+
+                                    {% if can_edit %}
+                                        <div class="mt-2">
+                                            <a href="{% url 'fund_requests:cost_item_add' item.pk %}"
+                                               class="btn btn-sm btn-success">
+                                                <i class="fas fa-plus"></i>
+                                                Tambah Rincian Biaya
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </td>
+
+                                <!-- AKSI KEGIATAN -->
+                                {% if can_edit %}
+                                    <td>
+                                        <form method="POST"
+                                              action="{% url 'fund_requests:activity_delete' item.pk %}"
+                                              onsubmit="return confirm('Hapus kegiatan ini dari pengajuan?')">
+
+                                            {% csrf_token %}
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                                Hapus Kegiatan
+                                            </button>
+
+                                        </form>
+                                    </td>
+                                {% endif %}
+
+                            </tr>
+
+                        {% empty %}
+                            <tr>
+                                <td colspan="{% if can_edit %}6{% else %}5{% endif %}"
+                                    class="text-center text-muted py-4">
+                                    Belum ada kegiatan dalam pengajuan.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% if can_edit %}
+                <div class="alert alert-info mt-3 mb-0">
+                    <i class="fas fa-info-circle"></i>
+                    Kamu dapat menambahkan kegiatan dari RKAT dan mengelola
+                    rincian biayanya selama pengajuan masih berstatus Draft
+                    atau Revisi.
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

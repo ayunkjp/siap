@@ -1,0 +1,596 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Data RKAT - SIAP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Header Halaman -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">
+                Rencana Kegiatan dan Anggaran (RKAT)
+            </h4>
+            <p class="text-muted mb-0">
+                Daftar RKAT berdasarkan Program Studi dan Tahun Anggaran.
+            </p>
+        </div>
+
+        {% if request.user.profile.role == "PRODI" %}
+        <button type="button" class="btn btn-primary"
+                onclick="openRkatModal()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Buat RKAT
+        </button>
+        {% endif %}
+    </div>
+
+
+    <!-- Tabel RKAT -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table id="rkatTable"
+                       class="table table-striped table-hover w-100">
+
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Nomor RKAT</th>
+                            <th>Program Studi</th>
+                            <th>Fakultas</th>
+                            <th>Tahun Anggaran</th>
+                            <th>Total Usulan</th>
+                            <th>Status</th>
+                            <th width="220">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ================================================== -->
+<!-- MODAL BUAT RKAT - KHUSUS PRODI -->
+<!-- ================================================== -->
+
+{% if request.user.profile.role == "PRODI" %}
+
+<div class="modal fade" id="rkatModal" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form id="rkatForm">
+
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Buat Draft RKAT
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-1"></i>
+
+                        Draft RKAT akan dibuat berdasarkan Program Studi
+                        dan Tahun Anggaran aktif pada akun ini.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Catatan
+                        </label>
+
+                        <textarea
+                            name="notes"
+                            id="rkatNotes"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Catatan awal RKAT (opsional)">
+                        </textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="saveRkatButton">
+
+                        <i class="bi bi-save me-1"></i>
+                        Buat Draft
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+<!-- ================================================== -->
+<!-- CSRF TOKEN GLOBAL -->
+<!-- Digunakan oleh PRODI dan FAKULTAS -->
+<!-- ================================================== -->
+
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<!-- DataTables -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css"
+>
+
+
+<script>
+
+// ==================================================
+// KONFIGURASI GLOBAL
+// ==================================================
+
+const userRole = "{{ request.user.profile.role }}";
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+let rkatTable;
+
+
+// ==================================================
+// FORMAT RUPIAH
+// ==================================================
+
+function formatRupiah(value) {
+
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }).format(Number(value));
+
+}
+
+
+// ==================================================
+// WARNA STATUS RKAT
+// ==================================================
+
+function getStatusBadge(statusCode, statusLabel) {
+
+    const colors = {
+        "DRAFT": "secondary",
+        "SUBMITTED": "info",
+        "FORWARDED": "primary",
+        "DECISION_RECORDED": "success",
+        "ALLOCATION_ADJUSTMENT": "warning",
+        "READY": "success"
+    };
+
+    const color = colors[statusCode] || "secondary";
+
+    return `
+        <span class="badge bg-${color}">
+            ${statusLabel}
+        </span>
+    `;
+
+}
+
+
+// ==================================================
+// TOMBOL AKSI RKAT
+// ==================================================
+
+function renderRkatActions(row) {
+
+    let actions = `
+        <a href="/rkat/${row.id}/"
+           class="btn btn-sm btn-primary me-1">
+
+            <i class="bi bi-eye"></i>
+            Detail
+
+        </a>
+    `;
+
+
+    // Aksi khusus PRODI
+    if (
+        userRole === "PRODI"
+        && row.status_code === "DRAFT"
+    ) {
+
+        actions += `
+            <button
+                type="button"
+                class="btn btn-sm btn-success"
+                onclick="submitRkat(${row.id})">
+
+                <i class="bi bi-send"></i>
+                Ajukan
+
+            </button>
+        `;
+
+    }
+
+
+    // Aksi khusus FAKULTAS
+    if (
+        userRole === "FAKULTAS"
+        && row.status_code === "SUBMITTED"
+    ) {
+
+        actions += `
+            <button
+                type="button"
+                class="btn btn-sm btn-success"
+                onclick="forwardRkat(${row.id})">
+
+                <i class="bi bi-forward"></i>
+                Teruskan
+
+            </button>
+        `;
+
+    }
+
+    return actions;
+
+}
+
+
+// ==================================================
+// DATATABLE RKAT
+// ==================================================
+
+$(document).ready(function () {
+
+    rkatTable = $("#rkatTable").DataTable({
+
+        ajax: {
+            url: "{% url 'rkat:data' %}",
+            dataSrc: "data"
+        },
+
+        columns: [
+
+            {
+                data: null,
+
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+
+            {
+                data: "submission_number"
+            },
+
+            {
+                data: "study_program"
+            },
+
+            {
+                data: "faculty"
+            },
+
+            {
+                data: "budget_year"
+            },
+
+            {
+                data: "proposed_total",
+
+                render: function (data) {
+                    return formatRupiah(data);
+                }
+            },
+
+            {
+                data: null,
+
+                render: function (row) {
+                    return getStatusBadge(
+                        row.status_code,
+                        row.status
+                    );
+                }
+            },
+
+            {
+                data: null,
+
+                orderable: false,
+                searchable: false,
+
+                render: function (row) {
+                    return renderRkatActions(row);
+                }
+            }
+
+        ],
+
+        language: {
+
+            search: "Cari:",
+
+            lengthMenu: "Tampilkan _MENU_ data",
+
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+
+            infoEmpty: "Tidak ada data",
+
+            zeroRecords: "Data tidak ditemukan",
+
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+
+        }
+
+    });
+
+});
+
+
+// ==================================================
+// MODAL BUAT RKAT - PRODI
+// ==================================================
+
+{% if request.user.profile.role == "PRODI" %}
+
+const rkatModal = new bootstrap.Modal(
+    document.getElementById("rkatModal")
+);
+
+const rkatForm = document.getElementById("rkatForm");
+
+
+function openRkatModal() {
+
+    rkatForm.reset();
+
+    rkatModal.show();
+
+}
+
+
+// ==================================================
+// SIMPAN DRAFT RKAT
+// ==================================================
+
+rkatForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const button = document.getElementById("saveRkatButton");
+
+    button.disabled = true;
+
+    try {
+
+        const response = await fetch(
+            "{% url 'rkat:create' %}",
+            {
+                method: "POST",
+
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+
+                body: new FormData(rkatForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                result.message || "Gagal membuat RKAT."
+            );
+
+            return;
+
+        }
+
+        alert(
+            result.message +
+            "\nNomor RKAT: " +
+            result.submission_number
+        );
+
+        rkatModal.hide();
+
+        rkatTable.ajax.reload(null, false);
+
+    } catch (error) {
+
+        alert("Terjadi kesalahan saat membuat RKAT.");
+
+    } finally {
+
+        button.disabled = false;
+
+    }
+
+});
+
+{% endif %}
+
+
+// ==================================================
+// AJUKAN RKAT - PRODI
+// ==================================================
+
+async function submitRkat(id) {
+
+    const confirmed = confirm(
+        "Apakah Anda yakin ingin mengajukan RKAT ini ke Fakultas?\n\n" +
+        "Setelah diajukan, komponen kegiatan tidak dapat diubah."
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/rkat/${id}/ajukan/`,
+            {
+                method: "POST",
+
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                result.message || "Gagal mengajukan RKAT."
+            );
+
+            return;
+
+        }
+
+        alert(result.message);
+
+        rkatTable.ajax.reload(null, false);
+
+    } catch (error) {
+
+        alert("Terjadi kesalahan saat mengajukan RKAT.");
+
+    }
+
+}
+
+
+// ==================================================
+// TERUSKAN RKAT - FAKULTAS
+// ==================================================
+
+async function forwardRkat(id) {
+
+    const referenceNumber = prompt(
+        "Masukkan nomor surat penerusan ke Lembaga:"
+    );
+
+    if (referenceNumber === null) {
+        return;
+    }
+
+    const notes = prompt(
+        "Catatan penerusan (opsional):"
+    );
+
+    if (notes === null) {
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "reference_number",
+        referenceNumber.trim()
+    );
+
+    formData.append(
+        "notes",
+        notes.trim()
+    );
+
+    try {
+
+        const response = await fetch(
+            `/rkat/${id}/teruskan/`,
+            {
+                method: "POST",
+
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+
+                body: formData
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                result.message || "Gagal meneruskan RKAT."
+            );
+
+            return;
+
+        }
+
+        alert(result.message);
+
+        rkatTable.ajax.reload(null, false);
+
+    } catch (error) {
+
+        alert("Terjadi kesalahan saat meneruskan RKAT.");
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

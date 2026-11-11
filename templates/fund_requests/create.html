@@ -1,0 +1,81 @@
+{% extends "master/base.html" %}
+
+{% block title %}Buat Pengajuan Dana{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h4>Buat Pengajuan Dana</h4>
+        <p class="text-muted">
+            Buat draft pengajuan berdasarkan RKAT aktif yang sudah siap digunakan.
+        </p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header">
+            Informasi Pengajuan
+        </div>
+
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Perihal Pengajuan
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input type="text"
+                           name="subject"
+                           class="form-control"
+                           maxlength="255"
+                           placeholder="Contoh: Pengajuan Dana Kegiatan Prodi"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Tanggal Surat
+                    </label>
+
+                    <input type="date"
+                           name="letter_date"
+                           class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Catatan</label>
+
+                    <textarea name="notes"
+                              class="form-control"
+                              rows="3"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{% url 'fund_requests:index' %}"
+                       class="btn btn-secondary">
+                        Batal
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Buat Draft Pengajuan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

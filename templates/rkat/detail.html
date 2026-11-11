@@ -1,0 +1,438 @@
+
+{% extends "master/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Detail RKAT</h4>
+            <p class="text-muted mb-0">
+                {{ rkat.submission_number }}
+            </p>
+        </div>
+
+        <a href="{% url 'rkat:index' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Kembali
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Program Studi</small>
+                    <div class="fw-semibold">
+                        {{ rkat.study_program.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Fakultas</small>
+                    <div class="fw-semibold">
+                        {{ rkat.study_program.faculty.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tahun Anggaran</small>
+                    <div class="fw-semibold">
+                        {{ rkat.budget_year.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Status RKAT</small>
+                    <div>
+                        <span class="badge bg-primary">
+                            {{ rkat.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor RKAT</small>
+                    <div class="fw-semibold">
+                        {{ rkat.submission_number }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Usulan</small>
+                    <div class="fw-semibold text-primary">
+                        Rp {{ rkat.proposed_total|floatformat:0 }}
+                    </div>
+                </div>
+            </div>
+
+            {% if rkat.notes %}
+                <hr>
+                <small class="text-muted">Catatan</small>
+                <p class="mb-0">{{ rkat.notes }}</p>
+            {% endif %}
+        </div>
+        {% if rkat.status == "DECISION_RECORDED" or rkat.status == "ALLOCATION_ADJUSTMENT" %}
+            {% if user.profile.role == "FAKULTAS" %}
+                <a href="{% url 'rkat:set_budget' rkat.pk %}"
+                  class="btn btn-primary mb-3">
+                    <i class="fas fa-wallet"></i>
+                    {% if rkat.status == "ALLOCATION_ADJUSTMENT" %}
+                        Perbarui Pagu Final
+                    {% else %}
+                        Tetapkan Pagu Final
+                    {% endif %}
+                </a>
+            {% endif %}
+        {% endif %}
+        {% if rkat.status == "ALLOCATION_ADJUSTMENT" %}
+    {% if user.profile.role == "PRODI" %}
+        <a href="{% url 'rkat:adjust_allocations' rkat.pk %}"
+           class="btn btn-primary mb-3">
+            <i class="fas fa-sliders-h"></i>
+            Penyesuaian Alokasi Kegiatan
+        </a>
+    {% endif %}
+{% endif %}
+    </div>
+
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h5 class="mb-1">Komponen Kegiatan</h5>
+                    <small class="text-muted">
+                        Daftar kegiatan yang diajukan dalam RKAT.
+                    </small>
+                </div>
+
+                {% if can_edit %}
+                <button class="btn btn-primary"
+                        onclick="openActivityModal()">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Tambah Kegiatan
+                </button>
+                {% endif %}
+            </div>
+
+            <div class="table-responsive">
+              {% if rkat.status == "FORWARDED" %}
+                  {% if user.profile.role == "FAKULTAS" or user.profile.role == "ADMIN" %}
+                      <a href="{% url 'rkat:record_decision' rkat.pk %}"
+                        class="btn btn-primary mb-3">
+                          <i class="fas fa-file-signature"></i>
+                          Catat Keputusan Lembaga
+                      </a>
+                  {% endif %}
+              {% endif %}
+                <table id="activityTable"
+                       class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Nama Kegiatan</th>
+                            <th>Uraian</th>
+                            <th>Nominal Usulan</th>
+                            {% if can_edit %}
+                            <th width="120">Aksi</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="text-end mt-3">
+                <span class="text-muted me-2">Total Usulan:</span>
+                <strong id="totalProposed" class="fs-5">
+                    Rp {{ rkat.proposed_total|floatformat:0 }}
+                </strong>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% if can_edit %}
+<div class="modal fade" id="activityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="activityForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityModalTitle">
+                        Tambah Kegiatan
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="id" id="activityId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Kegiatan</label>
+                        <input type="text" name="name" id="activityName"
+                               class="form-control" maxlength="255" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Uraian Kegiatan</label>
+                        <textarea name="description" id="activityDescription"
+                                  class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nominal Usulan (Rp)</label>
+                        <input type="number" name="proposed_amount"
+                               id="activityAmount" class="form-control"
+                               min="0" step="0.01" required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary"
+                            id="saveActivityButton">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="csrfContainer" class="d-none">
+    {% csrf_token %}
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+
+<script>
+const rkatId = {{ rkat.id }};
+const canEdit = {{ can_edit|yesno:"true,false" }};
+
+let activityTable;
+
+function formatRupiah(value) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }).format(Number(value));
+}
+
+
+$(document).ready(function () {
+    activityTable = $("#activityTable").DataTable({
+        ajax: {
+            url: `/rkat/${rkatId}/komponen/data/`,
+            dataSrc: "data"
+        },
+
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => meta.row + 1
+            },
+            { data: "name" },
+            {
+                data: "description",
+                render: data => data || "-"
+            },
+            {
+                data: "proposed_amount",
+                render: data => formatRupiah(data)
+            },
+            ...(canEdit ? [{
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: row => `
+                    <button class="btn btn-sm btn-warning me-1"
+                        onclick="editActivity(${row.id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                        onclick="deleteActivity(${row.id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `
+            }] : [])
+        ],
+
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            zeroRecords: "Data tidak ditemukan",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Berikutnya"
+            }
+        }
+    });
+
+    $("#activityTable").on("xhr.dt", function (event, settings, json) {
+        if (!json || !json.data) return;
+
+        const total = json.data.reduce(
+            (sum, item) => sum + Number(item.proposed_amount),
+            0
+        );
+
+        document.getElementById("totalProposed").textContent =
+            formatRupiah(total);
+    });
+});
+
+
+{% if can_edit %}
+const activityModal = new bootstrap.Modal(
+    document.getElementById("activityModal")
+);
+
+const activityForm = document.getElementById("activityForm");
+
+const csrfToken = document.querySelector(
+    "#csrfContainer [name=csrfmiddlewaretoken]"
+).value;
+
+
+function openActivityModal() {
+    activityForm.reset();
+
+    document.getElementById("activityId").value = "";
+
+    document.getElementById("activityModalTitle").textContent =
+        "Tambah Kegiatan";
+
+    activityModal.show();
+}
+
+
+async function editActivity(id) {
+    try {
+        const response = await fetch(
+            `/rkat/${rkatId}/komponen/data/`
+        );
+
+        const result = await response.json();
+        const activity = result.data.find(item => item.id === id);
+
+        if (!activity) {
+            alert("Kegiatan tidak ditemukan.");
+            return;
+        }
+
+        document.getElementById("activityId").value = activity.id;
+        document.getElementById("activityName").value = activity.name;
+        document.getElementById("activityDescription").value =
+            activity.description;
+        document.getElementById("activityAmount").value =
+            activity.proposed_amount;
+
+        document.getElementById("activityModalTitle").textContent =
+            "Edit Kegiatan";
+
+        activityModal.show();
+
+    } catch (error) {
+        alert("Gagal mengambil data kegiatan.");
+    }
+}
+
+
+activityForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("saveActivityButton");
+    button.disabled = true;
+
+    try {
+        const response = await fetch(
+            `/rkat/${rkatId}/komponen/save/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                body: new FormData(activityForm)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menyimpan kegiatan.");
+            return;
+        }
+
+        alert(result.message);
+        activityModal.hide();
+        activityTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menyimpan kegiatan.");
+    } finally {
+        button.disabled = false;
+    }
+});
+
+
+async function deleteActivity(id) {
+    if (!confirm("Yakin ingin menghapus kegiatan ini?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/rkat/komponen/delete/${id}/`,
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Gagal menghapus kegiatan.");
+            return;
+        }
+
+        alert(result.message);
+        activityTable.ajax.reload(null, false);
+
+    } catch (error) {
+        alert("Terjadi kesalahan saat menghapus kegiatan.");
+    }
+}
+{% endif %}
+</script>
+{% endblock %}

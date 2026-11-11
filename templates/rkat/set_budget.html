@@ -1,0 +1,205 @@
+{% extends "master/base.html" %}
+
+{% block title %}Penetapan Pagu Final{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Penetapan Pagu Final Prodi</h4>
+            <p class="text-muted mb-0">
+                Tetapkan pagu berdasarkan keputusan Lembaga.
+            </p>
+        </div>
+
+        <a href="{% url 'rkat:detail' rkat.pk %}"
+           class="btn btn-secondary">
+            Kembali
+        </a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- INFORMASI RKAT -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Informasi RKAT
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor RKAT</small>
+                    <div class="fw-bold">
+                        {{ rkat.submission_number }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Program Studi</small>
+                    <div class="fw-bold">
+                        {{ rkat.study_program.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Fakultas</small>
+                    <div class="fw-bold">
+                        {{ rkat.study_program.faculty.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tahun Anggaran</small>
+                    <div class="fw-bold">
+                        {{ rkat.budget_year.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Usulan RKAT</small>
+                    <div class="fw-bold">
+                        Rp {{ rkat.proposed_total|floatformat:0 }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- KEPUTUSAN LEMBAGA -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Informasi Keputusan Lembaga
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Status Keputusan</small>
+                    <div class="fw-bold">
+                        {{ decision.get_decision_status_display }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tanggal Keputusan</small>
+                    <div class="fw-bold">
+                        {{ decision.decision_date|date:"d-m-Y" }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor Referensi</small>
+                    <div class="fw-bold">
+                        {{ decision.reference_number|default:"-" }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nominal Disetujui Lembaga</small>
+                    <div class="fw-bold text-success">
+                        Rp {{ decision.approved_total|floatformat:0 }}
+                    </div>
+                </div>
+
+                {% if decision.document %}
+                <div class="col-md-12">
+                    <a href="{{ decision.document.url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-file-pdf"></i>
+                        Lihat Dokumen Keputusan
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM PAGU -->
+    <div class="card">
+        <div class="card-header">
+            Form Penetapan Pagu Final
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-info">
+                Pagu final yang ditetapkan Fakultas tidak boleh melebihi
+                nominal yang telah disetujui Lembaga.
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Nominal Pagu Final
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input type="number"
+                           name="final_amount"
+                           class="form-control"
+                           min="0.01"
+                           max="{{ decision.approved_total }}"
+                           step="0.01"
+                           value="{% if allocation %}{{ allocation.final_amount }}{% endif %}"
+                           required>
+
+                    <small class="text-muted">
+                        Maksimal:
+                        Rp {{ decision.approved_total|floatformat:0 }}
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Catatan Fakultas
+                    </label>
+
+                    <textarea name="notes"
+                              class="form-control"
+                              rows="3">{% if allocation %}{{ allocation.notes }}{% endif %}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a href="{% url 'rkat:detail' rkat.pk %}"
+                       class="btn btn-secondary">
+                        Batal
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        {% if allocation %}
+                            Perbarui Pagu
+                        {% else %}
+                            Tetapkan Pagu
+                        {% endif %}
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+
+{% extends "master/base.html" %}
+
+{% block title %}Daftar LPJ{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="h3">Laporan Pertanggungjawaban</h1>
+            <p class="text-muted mb-0">
+                Daftar LPJ dan status pemeriksaannya.
+            </p>
+        </div>
+    </div>
+
+    {% if user.profile.role == "PRODI" %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Pengajuan yang Belum Dibuatkan LPJ</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nomor Pengajuan</th>
+                            <th>Judul Pengajuan</th>
+                            <th>Tahun Anggaran</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in available_requests %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.request_number }}</td>
+                            <td>{{ item.subject }}</td>
+                            <td>{{ item.budget_year.name }}</td>
+                            <td>
+                                <a
+                                    href="{% url 'accountability:create' item.pk %}"
+                                    class="btn btn-sm btn-primary"
+                                >
+                                    Buat LPJ
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Tidak ada pengajuan yang perlu dibuatkan LPJ.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Daftar LPJ</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nomor Pengajuan</th>
+                            <th>Program Studi</th>
+                            <th>Tahun Anggaran</th>
+                            <th>Total Realisasi</th>
+                            <th>Status LPJ</th>
+                            <th>Tanggal Pengiriman</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in reports %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.fund_request.request_number }}</td>
+                            <td>
+                                {{ item.fund_request.study_program.name }}
+                            </td>
+                            <td>
+                                {{ item.fund_request.budget_year.name }}
+                            </td>
+                            <td>
+                                Rp{{ item.realization_total|floatformat:2 }}
+                            </td>
+                            <td>
+                                {% if item.status == "DRAFT" %}
+                                    <span class="badge badge-secondary">Draft</span>
+                                {% elif item.status == "SUBMITTED" %}
+                                    <span class="badge badge-info">Dikirim ke Fakultas</span>
+                                {% elif item.status == "REVISION" %}
+                                    <span class="badge badge-warning">Perlu Revisi</span>
+                                {% elif item.status == "ACCEPTED" %}
+                                    <span class="badge badge-success">Diterima Fakultas</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.submitted_at %}
+                                    {{ item.submitted_at|date:"d-m-Y H:i" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a
+                                    href="{% url 'accountability:detail' item.pk %}"
+                                    class="btn btn-sm btn-info"
+                                >
+                                    Detail
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                Belum ada LPJ.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

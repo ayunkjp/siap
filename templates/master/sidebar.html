@@ -1,0 +1,133 @@
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-brand">
+        <h4>SIAP</h4>
+        <small>Sistem Informasi Ajuan Prodi</small>
+    </div>
+
+    <div class="sidebar-menu">
+
+        <span class="sidebar-label">Menu Utama</span>
+
+        {% if request.user.profile.role == "ADMIN" %}
+
+            <a href="{% url 'accounts:admin_dashboard' %}" class="sidebar-link">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <span class="sidebar-label">Master Data</span>
+
+            <a href="{% url 'master_data:faculty_index' %}" class="sidebar-link">
+                <i class="bi bi-building"></i>
+                <span>Data Fakultas</span>
+            </a>
+
+            <a href="{% url 'master_data:study_program_index' %}" class="sidebar-link">
+                <i class="bi bi-mortarboard"></i>
+                <span>Data Program Studi</span>
+            </a>
+
+           <a href="{% url 'master_data:budget_year_index' %}" class="sidebar-link">
+              <i class="bi bi-calendar3"></i>
+              <span>Tahun Anggaran</span>
+          </a>
+
+            <a href="{% url 'accounts:user_management_index' %}" class="sidebar-link">
+                <i class="bi bi-people"></i>
+                <span>Manajemen Pengguna</span>
+            </a>
+
+        {% elif request.user.profile.role == "PRODI" %}
+
+            <a href="{% url 'accounts:prodi_dashboard' %}">
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <span class="sidebar-label">Anggaran</span>
+
+            <a href="{% url 'rkat:index' %}" class="sidebar-link">
+                <i class="bi bi-file-earmark-spreadsheet"></i>
+                <span>RKAT</span>
+            </a>
+
+            {% if user.profile.role == "PRODI" or user.profile.role == "FAKULTAS" %}
+              <li class="nav-item">
+                  <a href="{% url 'fund_requests:index' %}" class="nav-link">
+                      <i class="nav-icon fas fa-money-bill-wave"></i>
+                      <p>Pengajuan Dana</p>
+                  </a>
+              </li>
+            {% endif %}
+            
+
+            <a href="#">
+                <i class="bi bi-cash-stack"></i>
+                Penerimaan Dana
+            </a>
+
+            <li class="nav-item">
+                <a href="{% url 'realizations:index' %}" class="nav-link">
+                    <i class="nav-icon fas fa-receipt"></i>
+                    <p>Realisasi Dana</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'accountability:index' %}" class="nav-link">
+                    <i class="nav-icon fas fa-file-invoice"></i>
+                    <p>LPJ</p>
+                </a>
+            </li>
+
+        {% elif request.user.profile.role == "FAKULTAS" %}
+
+            <a href="{% url 'accounts:fakultas_dashboard' %}">
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <span class="sidebar-label">Pengelolaan Anggaran</span>
+
+            <a href="{% url 'rkat:index' %}" class="sidebar-link">
+                <i class="bi bi-file-earmark-spreadsheet"></i>
+                <span>Data RKAT Prodi</span>
+            </a>
+
+            {% if user.profile.role == "PRODI" or user.profile.role == "FAKULTAS" %}
+            <li class="nav-item">
+                <a href="{% url 'fund_requests:index' %}" class="nav-link">
+                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                    <p>Pengajuan Dana</p>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if user.profile.role == "FAKULTAS" %}
+            <li class="nav-item">
+                <a href="{% url 'disbursements:index' %}" class="nav-link">
+                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                    <p>Pencairan Dana</p>
+                </a>
+            </li>
+            {% endif %}
+
+            <a href="#">
+                <i class="bi bi-arrow-left-right"></i>
+                Penyerahan Dana
+            </a>
+
+            <li class="nav-item">
+                <a href="{% url 'accountability:index' %}" class="nav-link">
+                    <i class="nav-icon fas fa-file-invoice"></i>
+                    <p>LPJ</p>
+                </a>
+            </li>
+
+        {% endif %}
+
+    </div>
+
+</aside>

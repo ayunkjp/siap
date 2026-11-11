@@ -1,0 +1,351 @@
+{% extends "master/base.html" %}
+
+{% block title %}Penyesuaian Alokasi RKAT{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Penyesuaian Alokasi Kegiatan</h4>
+            <p class="text-muted mb-0">
+                Atur nominal setiap kegiatan berdasarkan pagu final Fakultas.
+            </p>
+        </div>
+
+        <a href="{% url 'rkat:detail' rkat.pk %}"
+           class="btn btn-secondary">
+            Kembali
+        </a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- INFORMASI RKAT -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Informasi RKAT
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Nomor RKAT</small>
+                    <div class="fw-bold">
+                        {{ rkat.submission_number }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Program Studi</small>
+                    <div class="fw-bold">
+                        {{ rkat.study_program.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Tahun Anggaran</small>
+                    <div class="fw-bold">
+                        {{ rkat.budget_year.name }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted">Total Usulan Awal</small>
+                    <div class="fw-bold">
+                        Rp {{ rkat.proposed_total|floatformat:0 }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- INFORMASI PAGU -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Informasi Pagu Final
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted">Pagu Final Fakultas</small>
+                    <h5 class="fw-bold text-primary">
+                        Rp {{ budget_allocation.final_amount|floatformat:0 }}
+                    </h5>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted">Total Alokasi Saat Ini</small>
+                    <h5 class="fw-bold text-success">
+                        Rp {{ budget_allocation.allocated_total|floatformat:0 }}
+                    </h5>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted">Sisa Pagu</small>
+                    <h5 class="fw-bold text-warning">
+                        Rp {{ budget_allocation.remaining_amount|floatformat:0 }}
+                    </h5>
+                </div>
+
+            </div>
+
+            <div class="alert alert-info mb-0">
+                Total alokasi kegiatan tidak boleh melebihi pagu final.
+                Kegiatan hanya dapat menggunakan komponen yang sudah ada
+                pada RKAT awal.
+            </div>
+
+        </div>
+    </div>
+
+    <!-- DAFTAR KEGIATAN -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            Daftar Alokasi Kegiatan
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th width="50">No.</th>
+                            <th>Nama Kegiatan</th>
+                            <th>Uraian</th>
+                            <th>Usulan Awal</th>
+                            <th>Alokasi Saat Ini</th>
+                            <th width="280">Ubah Alokasi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for row in activity_rows %}
+
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>
+                                <strong>
+                                    {{ row.activity.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ row.activity.description|default:"-" }}
+                            </td>
+
+                            <td>
+                                Rp {{ row.activity.proposed_amount|floatformat:0 }}
+                            </td>
+
+                            <td>
+                                {% if row.allocation %}
+                                    <strong class="text-success">
+                                        Rp {{ row.allocation.amount|floatformat:0 }}
+                                    </strong>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">
+                                        Belum dialokasikan
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+
+                                <form method="POST">
+                                    {% csrf_token %}
+
+                                    <input type="hidden"
+                                           name="action"
+                                           value="save">
+
+                                    <input type="hidden"
+                                           name="activity_id"
+                                           value="{{ row.activity.pk }}">
+
+                                    <div class="mb-2">
+                                        <input type="number"
+                                               name="amount"
+                                               class="form-control form-control-sm"
+                                               min="0"
+                                               step="0.01"
+                                               placeholder="Nominal alokasi"
+                                               value="{% if row.allocation %}{{ row.allocation.amount }}{% else %}0{% endif %}"
+                                               required>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <input type="text"
+                                               name="reason"
+                                               class="form-control form-control-sm"
+                                               placeholder="Alasan perubahan"
+                                               required>
+                                    </div>
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-primary w-100">
+                                        <i class="fas fa-save"></i>
+                                        Simpan Alokasi
+                                    </button>
+
+                                </form>
+
+                            </td>
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="6"
+                                class="text-center text-muted">
+                                Belum ada kegiatan RKAT.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RIWAYAT PERUBAHAN -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            Riwayat Perubahan Alokasi
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Kegiatan</th>
+                            <th>Alokasi Lama</th>
+                            <th>Alokasi Baru</th>
+                            <th>Diubah Oleh</th>
+                            <th>Waktu</th>
+                            <th>Alasan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for row in activity_rows %}
+                            {% for history in row.histories %}
+
+                            <tr>
+                                <td>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</td>
+
+                                <td>
+                                    {{ row.activity.name }}
+                                </td>
+
+                                <td>
+                                    Rp {{ history.old_amount|floatformat:0 }}
+                                </td>
+
+                                <td>
+                                    Rp {{ history.new_amount|floatformat:0 }}
+                                </td>
+
+                                <td>
+                                    {{ history.changed_by.username }}
+                                </td>
+
+                                <td>
+                                    {{ history.created_at|date:"d-m-Y H:i" }}
+                                </td>
+
+                                <td>
+                                    {{ history.reason }}
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="7"
+                                class="text-center text-muted">
+                                Belum ada riwayat perubahan alokasi.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FINALISASI -->
+    <div class="card">
+        <div class="card-body">
+
+            <h5>Selesaikan Penyesuaian RKAT</h5>
+
+            <p class="text-muted">
+                Pastikan seluruh kegiatan sudah memiliki nominal alokasi.
+                Setelah diselesaikan, RKAT akan berubah menjadi READY dan
+                dapat digunakan untuk pengajuan dana.
+            </p>
+
+            <form method="POST"
+                  onsubmit="return confirm('Apakah Anda yakin ingin menyelesaikan penyesuaian alokasi RKAT? Setelah ini RKAT tidak dapat diubah melalui halaman penyesuaian.');">
+
+                {% csrf_token %}
+
+                <input type="hidden"
+                       name="action"
+                       value="finalize">
+
+                <button type="submit"
+                        class="btn btn-success">
+                    <i class="fas fa-check-circle"></i>
+                    Selesaikan Penyesuaian RKAT
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
